@@ -1,0 +1,11 @@
+
+version: 2
+
+sources:
+  - name: pressure_monitoring
+    database: sri-benchmarking-databases
+    schema: pressure_monitoring
+    tables:
+      - name: earnings_call_transcript_metadata
+      - name: earnings_call_transcript_content
+      - name: earnings_call_transcript_enrichments      
