@@ -8,4 +8,9 @@ sources:
     tables:
       - name: earnings_call_transcript_metadata
       - name: earnings_call_transcript_content
-      - name: earnings_call_transcript_enrichments      
+      - name: earnings_call_transcript_enrichments
+  - name: social_media_activity_archive
+    database: sri-benchmarking-databases
+    schema: social_media_activity_archive
+    tables:
+      - name: benchmarking_corporate_reference

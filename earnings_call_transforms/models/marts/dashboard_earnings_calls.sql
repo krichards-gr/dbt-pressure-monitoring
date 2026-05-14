@@ -7,7 +7,7 @@
 WITH source_calls AS (
   SELECT *,
     -- Unique paragraph id code
-    MD5(CONCAT(transcript_id, '_', CAST(paragraph_number AS STRING))) as paragraph_id
+    TO_HEX(MD5(CONCAT(transcript_id, '_', CAST(paragraph_number AS STRING))) as paragraph_id)
   FROM {{ ref('stg_earnings_call_joined') }}
 
   {% if is_incremental() %}
@@ -27,8 +27,8 @@ SELECT source_calls.paragraph_id,
       source_calls.fiscal_quarter,
       source_calls.speaker,
       source_calls.content,
-      enrich.transcript_id,
-      enrich.paragraph_number,
+      source_calls.transcript_id,
+      source_calls.paragraph_number,
       enrich.speaker_type,
       enrich.segment_type
 FROM source_calls
