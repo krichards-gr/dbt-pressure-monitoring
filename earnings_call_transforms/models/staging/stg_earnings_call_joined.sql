@@ -1,9 +1,14 @@
+-- Deduplicated (on transcript_id) and get/join records from raw earnings call tables (metadata + content)
+-- This table undergirds both the enrichment and dashboarding tables
+
 {{ config(materialized='view') }}
 
 SELECT
   info.transcript_id,
   info.symbol,
   info.report_date,
+  info.fiscal_year,
+  info.fiscal_quarter,
   c.paragraph_number,
   c.speaker,
   c.content
