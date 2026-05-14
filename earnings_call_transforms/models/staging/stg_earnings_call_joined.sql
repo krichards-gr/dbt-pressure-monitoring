@@ -19,3 +19,9 @@ FROM (
 ) info
 LEFT JOIN {{ source('pressure_monitoring', 'earnings_call_transcript_content') }} c
   ON info.transcript_id = c.transcript_id
+
+  -- Deduplicate based on unique combinations of transcript_id and paragraph_number
+  QUALIFY ROW_NUMBER() OVER (
+    PARTITION BY info.transcript_id, c.paragraph_number
+    ORDER BY c.speaker
+  ) = 1

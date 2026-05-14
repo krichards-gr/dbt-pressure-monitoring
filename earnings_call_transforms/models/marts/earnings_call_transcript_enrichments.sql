@@ -1,6 +1,7 @@
 {{ config(
     materialized='incremental',
-    incremental_strategy='merge'
+    incremental_strategy='merge',
+    unique_key=['transcript_id', 'paragraph_number']
 ) }}
 
 WITH source_calls AS (
@@ -61,7 +62,7 @@ enriched AS (
   FROM exec_tagged
 )
 
-SELECT
+SELECT DISTINCT
   transcript_id,
   paragraph_number,
   speaker_type,

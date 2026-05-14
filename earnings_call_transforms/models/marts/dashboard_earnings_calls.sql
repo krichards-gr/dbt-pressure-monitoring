@@ -4,52 +4,56 @@
     unique_key='paragraph_id'
 ) }}
 
-WITH source_calls AS (
+WITH base_calls AS (
   SELECT *,
-    -- Unique paragraph id code
-    TO_HEX(MD5(CONCAT(transcript_id, '_', CAST(paragraph_number AS STRING))) as paragraph_id)
+    TO_HEX(MD5(CONCAT(transcript_id, '_', CAST(paragraph_number AS STRING)))) as paragraph_id
   FROM {{ ref('stg_earnings_call_joined') }}
+),
 
+-- Apply the incremental filter to the base
+source_calls AS (
+  SELECT * FROM base_calls
   {% if is_incremental() %}
-    WHERE transcript_id NOT IN (
-      SELECT DISTINCT transcript_id
-      FROM {{ this }}
-      WHERE transcript_id IS NOT NULL
-    )
+    WHERE paragraph_id NOT IN (SELECT paragraph_id FROM {{ this }})
   {% endif %}
 ),
 
 enrichments AS (
-SELECT source_calls.paragraph_id,
-      source_calls.symbol,
-      source_calls.report_date,
-      source_calls.fiscal_year,
-      source_calls.fiscal_quarter,
-      source_calls.speaker,
-      source_calls.content,
-      source_calls.transcript_id,
-      source_calls.paragraph_number,
-      enrich.speaker_type,
-      enrich.segment_type
-FROM source_calls
-LEFT JOIN {{ source('pressure_monitoring', 'earnings_call_transcript_enrichments') }} enrich
-  ON source_calls.transcript_id = enrich.transcript_id AND source_calls.paragraph_number = enrich.paragraph_number
+  SELECT 
+      s.paragraph_id,
+      s.symbol,
+      s.report_date,
+      s.fiscal_year,
+      s.fiscal_quarter,
+      s.speaker,
+      s.content,
+      s.transcript_id,
+      s.paragraph_number,
+      e.speaker_type,
+      e.segment_type
+  FROM source_calls s  -- Using the filtered source
+  LEFT JOIN {{ ref('earnings_call_transcript_enrichments') }} e
+    ON s.transcript_id = e.transcript_id 
+    AND s.paragraph_number = e.paragraph_number
 )
 
-SELECT enrichments.paragraph_id,
-      enrichments.symbol,
-      TRIM(ref.corporation) as corporation,
-      TRIM(ref.sector) as sector,
-      enrichments.transcript_id,
-      enrichments.report_date,
-      enrichments.fiscal_year,
-      enrichments.fiscal_quarter,
-      enrichments.paragraph_number,
-      enrichments.speaker,
-      enrichments.speaker_type,
-      enrichments.segment_type,
-      enrichments.content
-FROM enrichments
+SELECT 
+    en.paragraph_id,
+    en.symbol,
+    TRIM(ref.corporation) as corporation,
+    TRIM(ref.sector) as sector,
+    en.transcript_id,
+    en.report_date,
+    en.fiscal_year,
+    en.fiscal_quarter,
+    en.paragraph_number,
+    en.speaker,
+    en.speaker_type,
+    en.segment_type,
+    en.content
+FROM enrichments en
 LEFT JOIN {{ source('social_media_activity_archive', 'benchmarking_corporate_reference') }} ref
-  ON enrichments.symbol = ref.Ticker
--- ORDER BY enrichments.report_date DESC, ref.Ticker, enrichments.paragraph_number
+  ON en.symbol = ref.Ticker
+
+-- THE MAGIC FIX: Ensures that if 'ref' has duplicates, we only take one per Ticker
+QUALIFY ROW_NUMBER() OVER (PARTITION BY en.paragraph_id ORDER BY ref.Rank) = 1

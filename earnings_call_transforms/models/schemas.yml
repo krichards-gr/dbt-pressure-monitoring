@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: earnings_call_transcript_enrichments
+    description: "Final table of enrichment information"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          config:
+            severity: warn
+          arguments:
+            combination_of_columns:
+              - transcript_id
+              - paragraph_number
+  - name: dashboard_earnings_calls
+    description: "Consolidated (non-tidy) table for serving in analytics dashboard for analyst access/export"
+    columns:
+      - name: paragraph_id
+        tests:
+          - unique
+          - not_null
