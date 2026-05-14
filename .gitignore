@@ -1,0 +1,5 @@
+.venv/
+logs/
+earnings_call_transforms/target/
+earnings_call_transforms/dbt_packages/
+earnings_call_transforms/logs/

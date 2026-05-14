@@ -1,0 +1,12 @@
+earnings_call_transforms:
+  outputs:
+    prod:
+      type: bigquery
+      method: oauth
+      project: sri-benchmarking-databases
+      dataset: pressure_monitoring
+      location: us-east1
+      threads: 4
+      job_execution_timeout_seconds: 600
+      job_retries: 1
+  target: prod
