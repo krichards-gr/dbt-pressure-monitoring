@@ -1,6 +1,6 @@
 -- TODO: What other cleanup and enforcement do we need to do here?
 
-{{ config(materialized='view', schema='social_media_activity_archive') }}
+{{ config(schema='social_media_activity_archive') }}
 
 SELECT
   TRIM(_Corporation) as corporation,

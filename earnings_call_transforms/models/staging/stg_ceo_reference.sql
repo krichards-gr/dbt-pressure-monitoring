@@ -1,6 +1,4 @@
--- TODO: What other cleanup and enforcement do we need to do here?
-
-{{ config(materialized='view', schema='social_media_activity_archive') }}
+{{ config(schema='social_media_activity_archive') }} -- Override default schema (dataset assignment) to build in the benchmarking BQ dataset
 
 SELECT
   NULLIF(TRIM(corporation), '') AS corporation,
@@ -11,6 +9,6 @@ SELECT
 
   FROM {{ source('social_media_activity_archive', 'external_ceo_benchmarking_reference') }}
 
-  WHERE TRIM(corporation) != '' AND TRIM(chief_executive_officer) != ''
+  WHERE TRIM(corporation) != '' AND TRIM(chief_executive_officer) != '' -- Ensure that neither of the key columns are missing values
 
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY corporation, chief_executive_officer) = 1
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY corporation, chief_executive_officer) = 1 -- Arbitrarily choose one if duplicates (company + CEO) are present

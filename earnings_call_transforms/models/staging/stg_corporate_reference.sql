@@ -1,3 +1,5 @@
+-- TODO: Do I need to move this to the benchmarking dataset?
+
 SELECT 
     TRIM(corporation) as corporation,
     TRIM(sector) as sector,

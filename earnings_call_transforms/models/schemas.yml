@@ -41,6 +41,47 @@ models:
               - corporation
               - chief_executive_officer
 
+  - name: stg_issue_term_reference
+    description: "Staging model for basic issue term information basic cleanup, type enforcement, and deduplication"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          config:
+            severity: warn
+          arguments:
+            combination_of_columns:
+              - category
+              - key_terms
+
+  - name: stg_instagram_posts
+    description: "Staging model for instagram data, basic cleanup, type enforcement, and deduplication"
+    columns:
+      - name: url
+        tests:
+          - unique
+      - name: discovery_input
+        tests:
+          - not_null
+
+  - name: stg_linkedin_posts
+    description: "Staging model for instagram data, basic cleanup, type enforcement, and deduplication"
+    columns:
+      - name: url
+        tests:
+          - unique
+      - name: discovery_input
+        tests:
+          - not_null
+
+  - name: stg_x_posts
+    description: "Staging model for instagram data, basic cleanup, type enforcement, and deduplication"
+    columns:
+      - name: url
+        tests:
+          - unique
+      - name: discovery_input
+        tests:
+          - not_null
+
 
   - name: int_dashboard_earnings_calls
     description: "Consolidated (non-tidy) model for serving in analytics dashboard for analyst access/export"

@@ -1,7 +1,3 @@
--- TODO: What other cleanup and enforcement do we need to do here?
-
-{{ config(materialized='view') }}
-
 SELECT
   transcript_id,
   TRIM(UPPER(symbol)) as symbol, -- Enforce uppercase here

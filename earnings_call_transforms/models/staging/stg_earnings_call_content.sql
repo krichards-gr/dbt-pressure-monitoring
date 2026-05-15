@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 SELECT transcript_id,
     paragraph_number,
     speaker,

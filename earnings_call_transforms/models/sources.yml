@@ -17,4 +17,7 @@ sources:
       - name: external_analyst_ced_subs
       - name: external_ceo_benchmarking_reference
       - name: external_issue_term_reference
+      - name: instagram_posts_copy # Raw Instagram data
+      - name: linkedin_posts_copy # Raw LinkedIn data
+      - name: x_posts # Raw X data
       - name: tagged_records
