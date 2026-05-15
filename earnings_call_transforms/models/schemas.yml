@@ -19,9 +19,8 @@ models:
           - unique
           - not_null
 
-
   - name: stg_earnings_call_content
-    description: "Staging model for earnings call metadata, basic cleanup, type enforcement, and deduplication"
+    description: "Staging model for earnings call content, basic cleanup, type enforcement, and deduplication"
     tests:
       - dbt_utils.unique_combination_of_columns:
           config:
@@ -31,10 +30,22 @@ models:
               - transcript_id
               - paragraph_number
 
+
   - name: int_dashboard_earnings_calls
-    description: "Consolidated (non-tidy) table for serving in analytics dashboard for analyst access/export"
+    description: "Consolidated (non-tidy) model for serving in analytics dashboard for analyst access/export"
     columns:
       - name: paragraph_id
         tests:
           - unique
           - not_null
+
+  - name: int_earnings_call_enrichments
+    description: "Intermediate model for earnings call enrichments (currently speaker_type and segment_type labels), with deduplication"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          config:
+            severity: warn
+          arguments:
+            combination_of_columns:
+              - transcript_id
+              - paragraph_number

@@ -13,4 +13,7 @@ sources:
     database: sri-benchmarking-databases
     schema: social_media_activity_archive
     tables:
-      - name: benchmarking_corporate_reference
+      - name: external_benchmarking_corporate_reference
+      - name: external_analyst_ced_subs
+      - name: external_ceo_benchmarking_reference
+      - name: external_issue_term_reference
