@@ -1,18 +1,19 @@
 -- TODO: Do I need to move this to the benchmarking dataset?
 
 SELECT 
-    TRIM(corporation) as corporation,
-    TRIM(sector) as sector,
-    TRIM(profile_url) as linkedin_url,
-    TRIM(instagram_url) as instagram_url,
-    TRIM(x_url) as x_url,
-    cik_SEC_lookup as cik, -- Enforce integer here
-    TRIM(peers_of) as peer_of,
+    TRIM(corporation) AS corporation,
+    TRIM(sector) AS sector,
+    TRIM(profile_url) AS linkedin_url,
+    TRIM(instagram_url) AS instagram_url,
+    TRIM(x_url) AS x_url,
+    cik_SEC_lookup AS cik, -- Enforce integer here
+    TRIM(peers_of) AS peer_of,
     rank, -- Enforce integer here
-    F100 as f100,
-    F500 as f500,
-    TRIM(parent) as parent,
-    TRIM(UPPER(ticker)) as symbol, -- Enforce uppercase here
+    F100 AS f100,
+    F500 AS f500,
+    TRIM(parent) AS parent,
+    TRIM(UPPER(ticker)) AS symbol, -- Enforce uppercase here
+    TRIM(Product) AS product
 
 FROM {{ source('social_media_activity_archive', 'external_benchmarking_corporate_reference') }}
 
