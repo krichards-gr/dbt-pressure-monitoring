@@ -17,3 +17,4 @@ sources:
       - name: external_analyst_ced_subs
       - name: external_ceo_benchmarking_reference
       - name: external_issue_term_reference
+      - name: tagged_records

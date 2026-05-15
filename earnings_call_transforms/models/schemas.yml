@@ -30,6 +30,17 @@ models:
               - transcript_id
               - paragraph_number
 
+  - name: stg_ceo_reference
+    description: "Staging model for CEO lookup information basic cleanup, type enforcement, and deduplication"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          config:
+            severity: error
+          arguments:
+            combination_of_columns:
+              - corporation
+              - chief_executive_officer
+
 
   - name: int_dashboard_earnings_calls
     description: "Consolidated (non-tidy) model for serving in analytics dashboard for analyst access/export"
