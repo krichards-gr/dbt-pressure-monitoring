@@ -1,8 +1,27 @@
 version: 2
 
+# TODO: What other tests do we need to enforce?
+
 models:
-  - name: earnings_call_transcript_enrichments
-    description: "Final table of enrichment information"
+  - name: stg_corporate_reference
+    description: "Staging model for corporate reference information, basic cleanup, type enforcement, and deduplication"
+    columns:
+      - name: corporation
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_earnings_call_metadata
+    description: "Staging model for earnings call metadata, basic cleanup, type enforcement, and deduplication"
+    columns:
+      - name: transcript_id
+        tests:
+          - unique
+          - not_null
+
+
+  - name: stg_earnings_call_content
+    description: "Staging model for earnings call metadata, basic cleanup, type enforcement, and deduplication"
     tests:
       - dbt_utils.unique_combination_of_columns:
           config:
@@ -11,7 +30,8 @@ models:
             combination_of_columns:
               - transcript_id
               - paragraph_number
-  - name: dashboard_earnings_calls
+
+  - name: int_dashboard_earnings_calls
     description: "Consolidated (non-tidy) table for serving in analytics dashboard for analyst access/export"
     columns:
       - name: paragraph_id

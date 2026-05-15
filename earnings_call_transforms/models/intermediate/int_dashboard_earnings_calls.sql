@@ -5,9 +5,20 @@
 ) }}
 
 WITH base_calls AS (
-  SELECT *,
-    TO_HEX(MD5(CONCAT(transcript_id, '_', CAST(paragraph_number AS STRING)))) as paragraph_id
-  FROM {{ ref('stg_earnings_call_joined') }}
+  SELECT info.transcript_id,
+    info.symbol,
+    info.report_date,
+    info.fiscal_year,
+    info.fiscal_quarter,
+    c.paragraph_number,
+    c.speaker,
+    c.content, -- Explicitly select all columns
+    TO_HEX(MD5(CONCAT(c.transcript_id, '_', CAST(paragraph_number AS STRING)))) as paragraph_id
+  
+  FROM {{ ref('stg_earnings_call_metadata') }} info
+
+  LEFT JOIN {{ ref('stg_earnings_call_content') }} c
+    ON info.transcript_id = c.transcript_id
 ),
 
 -- Apply the incremental filter to the base
@@ -32,7 +43,7 @@ enrichments AS (
       e.speaker_type,
       e.segment_type
   FROM source_calls s  -- Using the filtered source
-  LEFT JOIN {{ ref('earnings_call_transcript_enrichments') }} e
+  LEFT JOIN {{ ref('int_earnings_call_enrichments') }} e
     ON s.transcript_id = e.transcript_id 
     AND s.paragraph_number = e.paragraph_number
 )
@@ -40,8 +51,8 @@ enrichments AS (
 SELECT 
     en.paragraph_id,
     en.symbol,
-    TRIM(ref.corporation) as corporation,
-    TRIM(ref.sector) as sector,
+    ref.corporation,
+    ref.sector,
     en.transcript_id,
     en.report_date,
     en.fiscal_year,
@@ -52,8 +63,5 @@ SELECT
     en.segment_type,
     en.content
 FROM enrichments en
-LEFT JOIN {{ source('social_media_activity_archive', 'benchmarking_corporate_reference') }} ref
-  ON en.symbol = ref.Ticker
-
--- THE MAGIC FIX: Ensures that if 'ref' has duplicates, we only take one per Ticker
-QUALIFY ROW_NUMBER() OVER (PARTITION BY en.paragraph_id ORDER BY ref.Rank) = 1
+LEFT JOIN {{ ref('stg_corporate_reference') }} ref
+  ON en.symbol = ref.symbol

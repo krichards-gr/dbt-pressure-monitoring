@@ -89,3 +89,18 @@ Happy modeling!
 [0m14:53:49.720363 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000025370DAA780>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000025370DAA810>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000025370BC5BE0>]}
 [0m14:53:49.720363 [debug] [MainThread]: Flushing usage events
 [0m14:53:50.174283 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m08:46:43.736402 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B9406DF860>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B9403B9130>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B9404051F0>]}
+
+
+============================== 08:46:43.751397 | 75b99678-7926-472b-a3f2-05cf96bf9599 ==============================
+[0m08:46:43.751397 [info ] [MainThread]: Running with dbt=1.11.9
+[0m08:46:43.753397 [debug] [MainThread]: running dbt with arguments {'static_parser': 'True', 'no_print': 'None', 'version_check': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'target_path': 'None', 'printer_width': '80', 'write_json': 'True', 'empty': 'False', 'log_cache_events': 'False', 'introspect': 'True', 'cache_selected_only': 'False', 'fail_fast': 'False', 'debug': 'False', 'log_format': 'default', 'profiles_dir': 'C:\\Users\\krichards\\OneDrive - Bradley Media Holdings, Inc\\Documents\\GitHub\\dbt-earnings-call-transformation', 'send_anonymous_usage_stats': 'True', 'quiet': 'False', 'warn_error': 'None', 'partial_parse': 'True', 'use_colors': 'True', 'invocation_command': 'dbt build --full-refresh', 'indirect_selection': 'eager', 'use_experimental_parser': 'False', 'log_path': 'logs'}
+[0m08:46:43.754399 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path C:\Users\krichards\OneDrive - Bradley Media Holdings, Inc\Documents\GitHub\dbt-earnings-call-transformation\dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m08:46:43.757398 [debug] [MainThread]: Command `dbt build` failed at 08:46:43.756398 after 0.20 seconds
+[0m08:46:43.758398 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B940DA58B0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B940DA6690>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002B9403B9130>]}
+[0m08:46:43.758398 [debug] [MainThread]: Flushing usage events
+[0m08:46:44.453171 [debug] [MainThread]: An error was encountered while trying to flush usage events

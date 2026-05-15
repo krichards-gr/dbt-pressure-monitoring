@@ -5,14 +5,30 @@
 ) }}
 
 WITH source_calls AS (
+  
+SELECT
+  info.transcript_id,
+  info.symbol,
+  info.report_date,
+  info.fiscal_year,
+  info.fiscal_quarter,
+  c.paragraph_number,
+  c.speaker,
+  c.content
+
+FROM (
+  
   SELECT *
-  FROM {{ ref('stg_earnings_call_joined') }}
+  
+  FROM {{ ref('stg_earnings_call_metadata') }}) info
+
+  LEFT JOIN {{ ref('stg_earnings_call_content') }} c
+    ON info.transcript_id = c.transcript_id
 
   {% if is_incremental() %}
-    -- This replaces your IF guard + NOT IN filter.
     -- On incremental runs, only pull transcript_ids
     -- that don't already exist in the target table.
-    WHERE transcript_id NOT IN (
+    WHERE info.transcript_id NOT IN (
       SELECT DISTINCT transcript_id
       FROM {{ this }}
       WHERE transcript_id IS NOT NULL
