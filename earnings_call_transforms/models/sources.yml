@@ -22,4 +22,10 @@ sources:
       - name: x_posts # Raw X data
       - name: ceo_linkedin_posts # Raw CEO LinkedIn data
       - name: ceo_twitter_posts # Raw CEO X data
-      - name: tagged_records
+      - name: tagged_records # Finalized corporate engagement data
+
+  - name: non_socials_engagement_data
+    database: sri-benchmarking-databases
+    schema: non_socials_engagement_data
+    tables:
+      - name: engagement_data_outputs_raw # What tests do I need for this one?
