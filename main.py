@@ -2,6 +2,7 @@ import subprocess
 import os
 from flask import Flask, request, jsonify
 
+
 app = Flask(__name__)
 
 PROJECT_DIR = "/app/earnings_call_transforms"
