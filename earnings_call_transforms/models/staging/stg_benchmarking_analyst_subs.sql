@@ -13,6 +13,7 @@ SELECT
   TRIM(Link) as url,
   Submitter_s_name as submitted_by, -- Do we need to enforce some kind of formatting here?
   Timestamp as submitted_on,
-  TRIM(Additional_notes__optional_) as notes
+  TRIM(Additional_notes__optional_) as notes,
+  Done_ as completed
 
   FROM {{ source('social_media_activity_archive', 'external_analyst_ced_subs') }}

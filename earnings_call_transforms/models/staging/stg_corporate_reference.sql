@@ -1,6 +1,7 @@
 -- TODO: Do I need to move this to the benchmarking dataset?
 
 SELECT 
+    TRIM(assignments) AS assignments,
     TRIM(corporation) AS corporation,
     TRIM(sector) AS sector,
     TRIM(profile_url) AS linkedin_url,
