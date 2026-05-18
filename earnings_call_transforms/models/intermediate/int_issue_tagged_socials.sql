@@ -20,8 +20,6 @@
 -- TODO: How can we build this in, knowing that we need to translate?
 -- ==============================================================================
 
-INNER JOIN {{ ref(stg_issue_term_reference) }}
-
 WITH new_posts AS (
 
 SELECT
@@ -96,22 +94,9 @@ NewPosts_Ready AS (
     SELECT * FROM Translated_Batch
 )
 
--- grab on demand rows
--- drop any that don't match issue category key terms (inner join)
--- drop any records already in issue_tagged
-
-
--- INSERT INTO `sri-benchmarking-databases.social_media_activity_archive.benchmarking_issue_tagged` 
--- (corporation, sector, date_posted, post_text, url, platform, category, matched_terms, is_engagement, engagement_type, engagement_sub_type)
-
-
-
-
-
-
 
 -- ==============================================================================
--- 4. FINAL MATCHING & INSERT
+-- 3. FINAL MATCHING & INSERT
 -- ==============================================================================
 
 SELECT 
@@ -122,17 +107,18 @@ SELECT
     np.url,
     np.platform,
     it.category,
-    STRING_AGG(DISTINCT it.key_terms, ', ') AS matched_terms,
+    STRING_AGG(DISTINCT it.key_terms, ', ') AS matched_terms, -- List of terms that matched from our reference set
     CAST(NULL as INT64) as is_engagement,
     CAST(NULL as STRING) as engagement_type,
     CAST(NULL as STRING) as engagement_sub_type
 FROM NewPosts_Ready np
-INNER JOIN `sri-benchmarking-databases.social_media_activity_archive.benchmarking_issue_terms` it
+
+INNER JOIN {{ ref(stg_issue_term_reference) }} it -- Check whether the post text contains any of our list of issue terms
     ON REGEXP_CONTAINS(
         LOWER(np.post_text), 
         CONCAT(r'\b', LOWER(TRIM(it.key_terms)), r'\b')
     )
-GROUP BY
+GROUP BY -- Create one row for each category found for each input record
     np.corporation,
     np.sector,
     np.date_posted,
@@ -140,5 +126,3 @@ GROUP BY
     np.url,
     np.platform,
     it.category
-    
-ORDER BY date_posted DESC;
