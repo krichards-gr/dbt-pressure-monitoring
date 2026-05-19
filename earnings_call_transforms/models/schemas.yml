@@ -4,6 +4,8 @@ version: 2
 
 models:
   - name: stg_corporate_reference
+    config:
+      tags: ["earnings_calls", "pressure_monitoring", "benchmarking_socials"]
     description: "Staging model for corporate reference information, basic cleanup, type enforcement, and deduplication"
     columns:
       - name: corporation
@@ -12,6 +14,8 @@ models:
           - not_null
 
   - name: stg_earnings_call_metadata
+    config:
+      tags: ["earnings_calls", "pressure_monitoring"]
     description: "Staging model for earnings call metadata, basic cleanup, type enforcement, and deduplication"
     columns:
       - name: transcript_id
@@ -20,10 +24,13 @@ models:
           - not_null
 
   - name: stg_earnings_call_content
+    config:
+      tags: ["earnings_calls", "pressure_monitoring"]
     description: "Staging model for earnings call content, basic cleanup, type enforcement, and deduplication"
     tests:
       - dbt_utils.unique_combination_of_columns:
           config:
+            tags: ["earnings_calls", "pressure_monitoring"]
             severity: warn
           arguments:
             combination_of_columns:
@@ -31,6 +38,8 @@ models:
               - paragraph_number
 
   - name: stg_ceo_reference
+    config:
+      tags: "benchmarking_socials"
     description: "Staging model for CEO lookup information basic cleanup, type enforcement, and deduplication"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -42,6 +51,8 @@ models:
               - chief_executive_officer
 
   - name: stg_issue_term_reference
+    config:
+      tags: "benchmarking_socials"
     description: "Staging model for basic issue term information basic cleanup, type enforcement, and deduplication"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -84,14 +95,20 @@ models:
 
 
   - name: int_dashboard_earnings_calls
+    config:
+      tags: ["earnings_calls", "pressure_monitoring"]
     description: "Consolidated (non-tidy) model for serving in analytics dashboard for analyst access/export"
     columns:
       - name: paragraph_id
+        config:
+          tags: ["earnings_calls", "pressure_monitoring"]
         tests:
           - unique
           - not_null
 
   - name: int_earnings_call_enrichments
+    config:
+      tags: ["earnings_calls", "pressure_monitoring"]
     description: "Intermediate model for earnings call enrichments (currently speaker_type and segment_type labels), with deduplication"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -101,3 +118,26 @@ models:
             combination_of_columns:
               - transcript_id
               - paragraph_number
+
+  - name: mart_dashboard_earnings_calls
+    config:
+      tags: ["earnings_calls", "pressure_monitoring"]
+    description: "Final model, fully-enriched earnings call transcript data, ready to serve"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          config:
+            severity: warn
+          arguments:
+            combination_of_columns:
+              - transcript_id
+              - paragraph_number
+
+  - name: stg_tagged_records
+    config:
+      tags: ["benchmarking_socials", "benchmarking_other"]
+    description: "TBD..."
+    columns:
+      - name: retool_primary_key
+        tests:
+          - unique
+          - not_null

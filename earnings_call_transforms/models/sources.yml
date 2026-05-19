@@ -7,8 +7,12 @@ sources:
     schema: pressure_monitoring
     tables:
       - name: earnings_call_transcript_metadata
+        config:
+          tags: "earnings_calls"
       - name: earnings_call_transcript_content
-      
+        config:
+          tags: "earnings_calls"
+
   - name: social_media_activity_archive
     database: sri-benchmarking-databases
     schema: social_media_activity_archive
@@ -26,7 +30,9 @@ sources:
       - name: benchmarking_issue_tagged # This is present only for the first run
 
   - name: non_socials_engagement_data
+    description: "This database contains inputs to our benchmarking pipeline that are not explicitly scraped from social media platforms. While social media content may still be present, it is returned by the SERP scraper managed by Digital or from other 'third-party' collection methods."
     database: sri-benchmarking-databases
     schema: non_socials_engagement_data
     tables:
       - name: engagement_data_outputs_raw # What tests do I need for this one?
+        description: "This table contains the raw outputs of the Corporate Engagement Scraper maintained by the National Journal Digital team. Each record is a distinct instance of a potential corporate engagement, accompanied by metadata and an LLM-generated confidence score for whether or not it is actually an engagement."

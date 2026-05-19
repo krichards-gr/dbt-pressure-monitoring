@@ -1,6 +1,6 @@
   SELECT 
     assignments,
-    corrected_category AS category,
+    category,
     corporation,
     date_posted,
     deleted_at,
@@ -15,8 +15,8 @@
     product,
     retool_primary_key,
     row_status,
-    corrected_sector AS sector,
+    sector,
     summary,
     url
 
-FROM {{ ref('int_unvalidated_benchmarking.sql' )}}
+FROM {{ ref('int_unvalidated_benchmarking' )}}
