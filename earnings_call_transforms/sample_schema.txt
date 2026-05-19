@@ -1,0 +1,24 @@
+
+    assignments,
+    category,
+    corporation,
+    date_posted,
+    CAST(NULL AS TIMESTAMP) as deleted_at,
+    CAST(NULL as STRING) as edit_notes,
+    'Not Reviewed' as edit_status,
+    Engagement_Type,
+    `Engagement_Sub-Type`,
+    CAST(NULL as STRING) as event_group_id,
+    CAST(NULL AS BOOLEAN) as is_deleted,
+    platform,
+    post_text,
+    product,
+    REPLACE(TRIM(LOWER(COALESCE(corporation, ''))), ' ', '_') || '::' || TRIM(LOWER(COALESCE(url, ''))) || '::' || REPLACE(TRIM(LOWER(COALESCE(category, ''))), ' ', '_') 
+      AS retool_primary_key,
+    'Unlabeled' as row_status,
+    sector,
+    CAST(NULL as STRING) as summary,
+    url
+
+
+

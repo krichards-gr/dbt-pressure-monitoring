@@ -6,6 +6,7 @@ SELECT
     TRIM(sector) AS sector,
     TRIM(profile_url) AS linkedin_url,
     TRIM(instagram_url) AS instagram_url,
+    TRIM(newsroom_url) AS newsroom_url,
     TRIM(x_url) AS x_url,
     cik_SEC_lookup AS cik, -- Enforce integer here
     TRIM(peers_of) AS peer_of,
