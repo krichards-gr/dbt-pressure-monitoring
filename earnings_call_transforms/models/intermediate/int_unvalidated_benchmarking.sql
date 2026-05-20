@@ -1,3 +1,5 @@
+-- TODO: Add value testing for sector and category in shema
+
 {{ config(schema='social_media_activity_archive') }}
 
 
@@ -62,8 +64,8 @@ category_sector_mapped AS (
             THEN 'Newsroom'
       ELSE cd.platform 
     END AS platform,
-  sm.new_sector AS corrected_sector,
-  cm.new_category AS corrected_category
+    INITCAP(REPLACE(TRIM(COALESCE(sm.new_sector, sector)), "’", "'")) AS corrected_sector,
+    INITCAP(REPLACE(TRIM(COALESCE(cm.new_category, category)), "’", "'")) AS corrected_category
 
 FROM combined_data cd
 

@@ -1,10 +1,37 @@
 old_sector,new_sector
+Aerospace & Defense,Industrials
+Agriculture,Consumer Goods
+"Appliances, Electrical, And Electronics Manufacturing",Consumer Goods
+Biotechnology,Health
+Communication Services,Tech
 Communications Services,Tech
+Consulting,Consumer Goods
 Consumer Discretionary,Consumer Goods
+Consumer Goods,Consumer Goods
 Consumer Staples,Consumer Goods
+Defence & Space,Industrials
+Defense,Industrials
+Education,Non-Corporate Organization
+Entertainment,Consumer Goods
+Environmental Services,Consumer Goods
 Financials,Financial
+Gaming,Consumer Goods
+Government,Non-Corporate Organization
+Government Services,Non-Corporate Organization
 Healthcare,Health
 Information Technology,Tech
-Technology,Tech
-Other,Non-Corporate Organization
+Legal Services,Consumer Goods
+Manufacturing,Industrials
 Nonprofit,Non-Corporate Organization
+Other,Non-Corporate Organization
+Professional Services,Consumer Goods
+Professional/Business Services,Consumer Goods
+Public Safety,Non-Corporate Organization
+Retail,Consumer Goods
+Sports,Consumer Goods
+Technology,Tech
+Telecommunications,Tech
+Transportation,Industrials
+Transportation & Logistics,Industrials
+Transportation And Logistics,Industrials
+Waste Management,Industrials
