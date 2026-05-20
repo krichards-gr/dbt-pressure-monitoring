@@ -1,9 +1,9 @@
 substitutions:
-  _REGION: us-east1
+  _REGION: us-central1
   _PROJECT: sri-benchmarking-databases
   _REPO: dbt
-  _JOB_NAME: dbt-earnings-call-transforms
-  _SERVICE_ACCOUNT: dbt-runner@sri-benchmarking-databases.iam.gserviceaccount.com
+  _JOB_NAME: dbt-pressure-monitoring
+  _SERVICE_ACCOUNT: dbt-cloud-runner@sri-benchmarking-databases.iam.gserviceaccount.com
 
 steps:
   - name: gcr.io/cloud-builders/docker
