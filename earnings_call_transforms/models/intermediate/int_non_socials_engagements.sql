@@ -23,8 +23,11 @@ WITH rawCedData AS (
     'Unlabeled' AS row_status,
     REPLACE(TRIM(LOWER(COALESCE(corporation, ''))), ' ', '_') || '::' || TRIM(LOWER(COALESCE(url, ''))) || '::' || REPLACE(TRIM(LOWER(COALESCE(category, ''))), ' ', '_') AS retool_primary_key,
   FROM {{ ref('stg_non_socials_engagements') }}
-
   WHERE CAST(confidence_assessment AS INT64) >= 80
+QUALIFY ROW_NUMBER() OVER (
+  PARTITION BY retool_primary_key 
+  ORDER BY CAST(confidence_assessment AS INT64) DESC
+) = 1
 ),
   
 cedLabeled as (

@@ -19,4 +19,4 @@ SELECT
 
 FROM {{ source('social_media_activity_archive', 'external_benchmarking_corporate_reference') }}
 
-QUALIFY ROW_NUMBER() OVER (PARTITION BY symbol ORDER BY rank DESC) = 1
+QUALIFY ROW_NUMBER() OVER (PARTITION BY corporation ORDER BY rank DESC) = 1

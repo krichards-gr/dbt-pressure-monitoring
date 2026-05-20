@@ -168,3 +168,4 @@ WHERE (REPLACE(TRIM(LOWER(COALESCE(il.corporation, ''))), ' ', '_') || '::' || T
         FROM {{ ref('int_tagged_records')}}
       )
   AND DATE(il.date_posted) >= '2025-12-03'
+  AND category != "no_issue_match"

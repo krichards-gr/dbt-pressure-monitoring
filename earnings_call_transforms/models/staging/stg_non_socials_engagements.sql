@@ -16,8 +16,7 @@ NULLIF(TRIM(summary), '') AS summary
 
 FROM {{ source('non_socials_engagement_data', 'engagement_data_outputs_raw') }}
 
-WHERE TRIM(corporation) != '' -- Ensure that no key columns are missing values
-  AND TRIM(issue_area) != ''
-  AND TRIM(link) != ''
-
-QUALIFY ROW_NUMBER() OVER (PARTITION BY corporation, issue_area, link ORDER BY confidence_assessment DESC) = 1 -- Select most confident record if duplicate found (on post url)
+QUALIFY ROW_NUMBER() OVER (
+  PARTITION BY link 
+  ORDER BY SAFE_CAST(confidence_assessment AS INT64) DESC
+) = 1

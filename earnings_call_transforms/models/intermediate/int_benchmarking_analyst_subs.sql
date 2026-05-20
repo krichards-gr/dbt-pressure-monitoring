@@ -21,13 +21,9 @@ AND (
 other_rows AS (
   SELECT submitted_on, corporation, sector, engagement_date, category, engagement_type, engagement_subtype, summary, url
   FROM {{ ref('stg_benchmarking_analyst_subs') }}
-WHERE NOT(
-        completed = false -- I don't believe that this field is actually being utilized by submitters. How are we currently controlling for already-processed records?
-    AND (
-        REGEXP_CONTAINS(corporation, r'[,;]')
-        OR REGEXP_CONTAINS(category, r'[,;]')
-        )
-    )
+WHERE completed = false 
+  AND NOT (REGEXP_CONTAINS(corporation, r'[,;]') 
+           OR REGEXP_CONTAINS(category, r'[,;]'))
 ),
 
 --Operate on the rows that need to be split, first splitting by the corporation column...
