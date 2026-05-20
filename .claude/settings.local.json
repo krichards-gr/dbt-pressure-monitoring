@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\krichards\\\\OneDrive - Bradley Media Holdings, Inc\\\\Documents\\\\GitHub\\\\dbt-earnings-call-transformation\" -Force | Select-Object Name, @{Name=\"Type\";Expression={if\\($_.PSIsContainer\\){\"DIR\"}else{\"FILE\"}}} | Sort-Object Type, Name)"
+    ]
+  }
+}

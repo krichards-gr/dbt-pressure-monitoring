@@ -1,4 +1,4 @@
--- TODO: Add value testing for sector and category in shema
+-- TODO: Add value testing for sector and category in schema
 
 {{ config(schema='social_media_activity_archive') }}
 
