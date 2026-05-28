@@ -134,7 +134,7 @@ models:
   - name: stg_tagged_records
     config:
       tags: ["benchmarking_socials", "benchmarking_other"]
-    description: "TBD..."
+    description: "Finalized and in-process records from our official corporate engagement database. Basic deduplication on primary key"
     columns:
       - name: retool_primary_key
         tests:

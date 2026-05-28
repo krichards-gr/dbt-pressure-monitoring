@@ -1,5 +1,3 @@
--- TODO: What tests do we need to enforce here?
-
 {{ config(schema='social_media_activity_archive') }}
 
 SELECT 

@@ -1,4 +1,5 @@
 -- TODO: Add value testing for sector and category in schema
+-- Add uniqueness test on...?
 
 {{ config(schema='social_media_activity_archive') }}
 
@@ -37,7 +38,7 @@ corporate_newsrooms AS (
   FROM {{ ref('stg_corporate_reference')}}
 ),
 
-
+-- Correct sectors & issue categories
 category_sector_mapped AS (
   SELECT
     COALESCE(NULLIF(TRIM(cd.assignments), ''), 'Unassigned') AS assignments,

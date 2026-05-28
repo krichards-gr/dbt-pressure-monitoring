@@ -1,3 +1,6 @@
+-- TODO: Add deduplication, filters ("Not an Engagement", "Deleted", etc.)
+-- TODO: Add uniqueness and not null tests on retool_primary_key
+
 {{ config(schema='social_media_activity_archive') }}
 
 SELECT 
@@ -19,7 +22,8 @@ SELECT
     'Labeled' as row_status,
     B.sector,
     B.summary, 
-    B.url
+    B.url,
+    C.peer_of
 
 FROM {{ ref('stg_tagged_records')}} AS B
   
