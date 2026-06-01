@@ -5,7 +5,25 @@
 
 
 WITH combined_data AS (
-    SELECT * -- Explicitly name all columns (19)
+    SELECT assignments,
+    category,
+    corporation,
+    date_posted,
+    deleted_at,
+    edit_notes,
+    edit_status, 
+    Engagement_Type,
+    `Engagement_Sub-Type`,
+    event_group_id,
+    is_deleted,
+    platform,
+    post_text,
+    product,
+    retool_primary_key,
+    row_status,
+    sector,
+    summary, 
+    url
 
     FROM {{ ref('int_tagged_records') }} -- Our top priority dataset
 
@@ -23,9 +41,28 @@ WITH combined_data AS (
 
   UNION ALL
 
-    SELECT * -- Explicitly name all columns (19)
+    SELECT -- Explicitly name all columns (19)
+    assignments,
+    category,
+    corporation,
+    date_posted,
+    deleted_at,
+    edit_notes,
+    edit_status,
+    engagement_type,
+    engagement_sub_type, 
+    event_group_id,
+    is_deleted,
+    platform,
+    post_text,
+    product,
+    retool_primary_key,
+    row_status,
+    sector,
+    summary,
+    url
 
-    FROM {{ ref('int_issue_tagged_socials') }} -- Our social media engagement data, typically has a low rate of engagements per mil
+    FROM {{ ref('int_engagement_tagged_socials') }} -- Our social media engagement data, typically has a low rate of engagements per mil
 
 ),
 
@@ -65,8 +102,8 @@ category_sector_mapped AS (
             THEN 'Newsroom'
       ELSE cd.platform 
     END AS platform,
-    INITCAP(REPLACE(TRIM(COALESCE(sm.new_sector, sector)), "’", "'")) AS corrected_sector,
-    INITCAP(REPLACE(TRIM(COALESCE(cm.new_category, category)), "’", "'")) AS corrected_category
+    REPLACE(TRIM(COALESCE(sm.new_sector, sector)), "’", "'") AS corrected_sector,
+    REPLACE(TRIM(COALESCE(cm.new_category, category)), "’", "'") AS corrected_category
 
 FROM combined_data cd
 

@@ -1,4 +1,4 @@
-{{ config(schema='social_media_activity_archive') }} -- Override default schema (dataset assignment) to build in the benchmarking BQ dataset
+{{ config(schema='social_media_activity_archive', materialized='view') }} -- Force materialization as a view so it's recalculated at query time (to pull in recently updated tagged records)
 
 SELECT 
     assignments,

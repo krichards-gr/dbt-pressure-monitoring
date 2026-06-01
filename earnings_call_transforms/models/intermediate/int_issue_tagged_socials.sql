@@ -33,15 +33,20 @@ FROM {{ ref('int_on_demand_socials') }} ods
 -- On first run / full refresh, check against the legacy source table
 -- On incremental runs, check against the dbt-managed table instead
 {% if is_incremental() %}
+
 LEFT JOIN {{ this }} existing
+
     ON ods.url = existing.url AND ods.corporation = existing.corporation
+
+    WHERE existing.url IS NULL -- Keep only rows that are NOT in the existing table
+
 {% else %}
-LEFT JOIN {{ source('social_media_activity_archive', 'benchmarking_issue_tagged') }} existing
-    ON ods.url = existing.url AND ods.corporation = existing.corporation
+    
+    WHERE ods.type = "Organization"
+
 {% endif %}
 
-WHERE existing.url IS NULL -- Keep only rows that are NOT in the existing table
-    AND ods.type = "Organization"
+    
 ),
 
 -- ==============================================================================
@@ -135,6 +140,8 @@ GROUP BY -- Create one row for each category found for each input record
     it.category
 )
 
+-- TODO: Add engagement type pre-labeling (similar to issue labeling above)
+
 SELECT cr.assignments,
        il.category,
        il.corporation,
@@ -167,5 +174,5 @@ WHERE (REPLACE(TRIM(LOWER(COALESCE(il.corporation, ''))), ' ', '_') || '::' || T
         SELECT retool_primary_key
         FROM {{ ref('int_tagged_records')}}
       )
-  AND DATE(il.date_posted) >= '2025-12-03'
+--   AND DATE(il.date_posted) >= '2025-12-03'
   AND category != "no_issue_match"
