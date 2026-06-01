@@ -1,5 +1,4 @@
--- TODO: Add deduplication, filters ("Not an Engagement", "Deleted", etc.)
--- TODO: Add uniqueness and not null tests on retool_primary_key
+-- TODO: Is date_posted the right ordering column for our deduplication?
 
 {{ config(schema='social_media_activity_archive') }}
 
@@ -29,3 +28,5 @@ FROM {{ ref('stg_tagged_records')}} AS B
   
 LEFT JOIN {{ ref('stg_corporate_reference') }} AS C 
     ON TRIM(LOWER(C.corporation)) = TRIM(LOWER(B.corporation))
+
+QUALIFY row_number() over (partition by B.retool_primary_key order by date_posted desc) = 1

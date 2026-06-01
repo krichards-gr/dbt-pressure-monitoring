@@ -140,3 +140,13 @@ models:
         tests:
           - unique
           - not_null
+
+  - name: int_tagged_records
+    config:
+      tags: ["benchmarking_socials", "benchmarking_other"]
+    description: "Finalized records from our official corporate engagement database. Basic deduplication on primary key"
+    columns:
+      - name: retool_primary_key
+        tests:
+          - unique
+          - not_null
