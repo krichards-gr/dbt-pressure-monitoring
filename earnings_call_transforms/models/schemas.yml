@@ -1,31 +1,80 @@
 version: 2
 
-# TODO: What other tests do we need to enforce?
 
 models:
   - name: stg_corporate_reference
     config:
       tags: ["earnings_calls", "pressure_monitoring", "benchmarking_socials"]
-    description: "Staging model for corporate reference information, basic cleanup, type enforcement, and deduplication"
+    description: "Staging model for corporate reference information. Basic cleanup, type enforcement, and deduplication. Pulled from external table linked to Google Sheet: https://docs.google.com/spreadsheets/d/1Ct9Mw17bRTl-fRIixbMCWsKkhrMlP3LVKADJag5zS8o/edit?gid=95784411#gid=95784411"
+    
     columns:
+
+      - name: assignments
+        description: '{{ doc("assignments") }}'
+
       - name: corporation
         tests:
           - unique
+
+      - name: sector
+        description: '{{ doc("sector") }}'
+
 
   - name: stg_earnings_call_metadata
     config:
       tags: ["earnings_calls", "pressure_monitoring"]
     description: "Staging model for earnings call metadata, basic cleanup, type enforcement, and deduplication"
+    
     columns:
+
       - name: transcript_id
+        description: '{{ doc("earnings_call_transcript_id") }}'
         tests:
           - unique
           - not_null
+
+      - name: symbol
+        description: '{{ doc("symbol_or_ticker") }}'
+        tests:
+         - not_null
+
+      - name: report_date
+        description: "Date on which the call occured"
+        tests:
+         - not_null
+
+      - name: fiscal_year
+        description: '{{ doc("fiscal_year") }}'
+
+      - name: fiscal_quarter
+        description: '{{ doc("fiscal_quarter") }}'
+
 
   - name: stg_earnings_call_content
     config:
       tags: ["earnings_calls", "pressure_monitoring"]
     description: "Staging model for earnings call content, basic cleanup, type enforcement, and deduplication"
+    columns:
+      - name: transcript_id
+        description: '{{ doc("earnings_call_transcript_id") }}'
+        tests:
+          - unique
+          - not_null
+
+      - name: paragraph_number
+        description: '{{ doc("earnings_call_paragraph_number") }}'
+        tests:
+            - not_null
+
+      - name: speaker
+        description: '{{ doc("earnings_call_speaker") }}'
+        tests:
+            - not_null
+
+      - name: content
+        description: '{{ doc("earnings_call_content") }}'
+        tests:
+            - not_null
     tests:
       - dbt_utils.unique_combination_of_columns:
           config:
@@ -35,6 +84,8 @@ models:
             combination_of_columns:
               - transcript_id
               - paragraph_number
+
+
 
   - name: stg_ceo_reference
     config:

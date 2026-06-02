@@ -3,15 +3,59 @@ version: 2
 
 sources:
   - name: pressure_monitoring
+    description: "Currently contains datasets of corporate communications that are not primary sources for benchmarking (e.g., earnings call transcripts)."
     database: sri-benchmarking-databases
     schema: pressure_monitoring
+    
     tables:
+
       - name: earnings_call_transcript_metadata
-        config:
-          tags: "earnings_calls"
+        description: "Source data for information about each earnings call transcript, like call date and company. Pulled on a weekly basis from the defeatbeta API (Yahoo Finance data)."
+        columns:
+          - name: transcript_id
+            description: '{{ doc("earnings_call_transcript_id") }}'
+            tests:
+              - unique
+              - not_null
+          - name: symbol
+            description: '{{ doc("symbol_or_ticker") }}'
+            tests:
+            - not_null
+          - name: report_date
+            description: "Date on which the call occured"
+            tests:
+            - not_null
+          - name: fiscal_year
+            description: '{{ doc("fiscal_year") }}'
+          - name: fiscal_quarter
+            description: '{{ doc("fiscal_quarter") }}'
+            config:
+              tags: "earnings_calls"
+          
       - name: earnings_call_transcript_content
+        description: "Source data for content from each earnings call transcript, like speakers and transcript segments. Pulled on a weekly basis from the defeatbeta API (Yahoo Finance data)."
+        columns:
+            - name: transcript_id
+              description: '{{ doc("earnings_call_transcript_id") }}'
+              tests:
+                - unique
+                - not_null
+            - name: paragraph_number
+              description: '{{ doc("earnings_call_paragraph_number") }}'
+              tests:
+                  - not_null
+            - name: speaker
+              description: '{{ doc("earnings_call_speaker") }}'
+              tests:
+                  - not_null
+            - name: content
+              description: '{{ doc("earnings_call_content") }}'
+              tests:
+                  - not_null
         config:
           tags: "earnings_calls"
+
+
 
   - name: social_media_activity_archive
     database: sri-benchmarking-databases
