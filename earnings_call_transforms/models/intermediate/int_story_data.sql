@@ -16,7 +16,7 @@ WITH date_scaffold AS (
 unique_categories AS (
   SELECT DISTINCT corrected_category AS category 
     FROM {{ ref('stg_story_data') }}
-  WHERE issue_area IS NOT NULL
+  WHERE corrected_category IS NOT NULL
 ),
 
 -- Map every category to every scaffold date
@@ -29,7 +29,7 @@ master_grid AS (
 clustered AS (
   SELECT 
     scm.cluster_id,
-    s.issue_area,
+    s.corrected_category,
     DATE(s.last_seen_date) AS publish_date,
     scm.story_id
   FROM {{ source('zignal_gold', 'story_cluster_mapping') }} scm -- Need to make a staging table for this
@@ -42,7 +42,7 @@ clustered AS (
 cluster_starts AS (
   SELECT 
     cluster_id, 
-    ANY_VALUE(issue_area) AS issue_area,
+    ANY_VALUE(corrected_category) AS corrected_category,
     MIN(publish_date) AS cluster_started_date,
     COUNT(story_id) AS stories_in_cluster
   FROM clustered
@@ -53,7 +53,7 @@ cluster_starts AS (
 actual_counts AS (
   SELECT
     DATE_ADD(DATE('2025-01-07'), INTERVAL CAST(CEIL(DATE_DIFF(cluster_started_date, DATE('2025-01-07'), DAY) / 14) * 14 AS INT64) DAY) AS engagement_period_date,
-    issue_area AS category,
+    corrected_category AS category,
     SUM(stories_in_cluster) AS total_story_count
   FROM cluster_starts
   GROUP BY 1, 2
@@ -61,7 +61,7 @@ actual_counts AS (
 
 -- Step 5: Join actuals to the master grid and cap it at the current period
 SELECT
-  mg.monitoring_end_date AS engagement_period_date,
+  mg.monitoring_end_date,
   mg.category,
   COALESCE(ac.total_story_count, 0) AS total_story_count
 FROM master_grid mg
