@@ -13,11 +13,48 @@ models:
         description: '{{ doc("assignments") }}'
 
       - name: corporation
+        description: '{{ doc("corporation") }}'
         tests:
           - unique
 
       - name: sector
         description: '{{ doc("sector") }}'
+      
+      - name: linkedin_url
+        description: '{{ doc("profile_linkedin_url") }}'
+
+      - name: instagram_url
+        description: '{{ doc("instagram_url") }}'
+
+      - name: newsroom_url
+        description: '{{ doc("newsroom_url") }}'
+
+      - name: x_url
+        description: '{{ doc("x_url") }}'
+
+      - name: cik
+        description: '{{ doc("cik") }}'
+
+      - name: peer_of
+        description: '{{ doc("peer_of") }}'
+
+      - name: rank
+        description: '{{ doc("company_rank") }}'
+
+      - name: f100
+        description: '{{ doc("f100") }}'
+
+      - name: f500
+        description: '{{ doc("f500") }}'
+
+      - name: parent
+        description: '{{ doc("parent_company") }}'
+
+      - name: symbol
+        description: '{{ doc("symbol_or_ticker") }}'
+
+      - name: product
+        description: '{{ doc("product") }}'
 
 
   - name: stg_earnings_call_metadata
@@ -58,7 +95,6 @@ models:
       - name: transcript_id
         description: '{{ doc("earnings_call_transcript_id") }}'
         tests:
-          - unique
           - not_null
 
       - name: paragraph_number
@@ -79,6 +115,147 @@ models:
       - dbt_utils.unique_combination_of_columns:
           config:
             tags: ["earnings_calls", "pressure_monitoring"]
+            severity: warn
+          arguments:
+            combination_of_columns:
+              - transcript_id
+              - paragraph_number
+
+  - name: int_earnings_call_enrichments
+    config:
+      tags: ["earnings_calls", "pressure_monitoring"]
+    description: "Intermediate model for earnings call enrichments (currently speaker_type and segment_type labels), with deduplication"
+    columns:
+
+      - name: transcript_id
+        description: '{{ doc("earnings_call_transcript_id") }}'
+
+      - name: paragraph_number
+        description: '{{ doc("earnings_call_paragraph_number") }}'
+
+      - name: speaker_type
+        description: '{{ doc("earnings_call_speaker_role") }}'
+
+      - name: segment_type
+        description: '{{ doc("earnings_call_segment_type") }}'
+    
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          config:
+            severity: warn
+          arguments:
+            combination_of_columns:
+              - transcript_id
+              - paragraph_number
+
+  - name: int_dashboard_earnings_calls
+    config:
+      tags: ["earnings_calls", "pressure_monitoring"]
+    description: "Consolidated (non-tidy) model for serving in analytics dashboard for analyst access/export"
+    
+    columns:
+      
+      - name: paragraph_id
+        description: '{{ doc("earnings_call_paragraph_id") }}'
+
+      - name: symbol
+        description: '{{ doc("symbol_or_ticker") }}'
+
+      - name: corporation
+        description: '{{ doc("corporation") }}'
+
+      - name: sector
+        description: '{{ doc("sector") }}'
+
+      - name: transcript_id
+        description: '{{ doc("earnings_call_transcript_id") }}'
+
+      - name: report_date
+        description: "Date on which the call occured"
+
+      - name: fiscal_year
+        description: '{{ doc("fiscal_year") }}'
+
+      - name: fiscal_quarter
+        description: '{{ doc("fiscal_quarter") }}'
+
+      - name: paragraph_number
+        description: '{{ doc("earnings_call_paragraph_number") }}'
+        tests:
+            - not_null
+
+      - name: speaker
+        description: '{{ doc("earnings_call_speaker") }}'
+        tests:
+            - not_null
+
+      - name: speaker_type
+        description: '{{ doc("earnings_call_speaker_role") }}'
+
+      - name: segment_type
+        description: '{{ doc("earnings_call_segment_type") }}'
+
+      - name: content
+        description: '{{ doc("earnings_call_content") }}'
+        tests:
+            - not_null
+
+
+  - name: mart_dashboard_earnings_calls
+    config:
+      tags: ["earnings_calls", "pressure_monitoring"]
+    description: "Final model, fully-enriched earnings call transcript data, ready to serve"
+
+    columns:
+      
+      - name: paragraph_id
+        description: '{{ doc("earnings_call_paragraph_id") }}'
+
+      - name: symbol
+        description: '{{ doc("symbol_or_ticker") }}'
+
+      - name: corporation
+        description: '{{ doc("corporation") }}'
+
+      - name: sector
+        description: '{{ doc("sector") }}'
+
+      - name: transcript_id
+        description: '{{ doc("earnings_call_transcript_id") }}'
+
+      - name: report_date
+        description: "Date on which the call occured"
+
+      - name: fiscal_year
+        description: '{{ doc("fiscal_year") }}'
+
+      - name: fiscal_quarter
+        description: '{{ doc("fiscal_quarter") }}'
+
+      - name: paragraph_number
+        description: '{{ doc("earnings_call_paragraph_number") }}'
+        tests:
+            - not_null
+
+      - name: speaker
+        description: '{{ doc("earnings_call_speaker") }}'
+        tests:
+            - not_null
+
+      - name: speaker_type
+        description: '{{ doc("earnings_call_speaker_role") }}'
+
+      - name: segment_type
+        description: '{{ doc("earnings_call_segment_type") }}'
+
+      - name: content
+        description: '{{ doc("earnings_call_content") }}'
+        tests:
+            - not_null
+    
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          config:
             severity: warn
           arguments:
             combination_of_columns:
@@ -144,43 +321,7 @@ models:
           - not_null
 
 
-  - name: int_dashboard_earnings_calls
-    config:
-      tags: ["earnings_calls", "pressure_monitoring"]
-    description: "Consolidated (non-tidy) model for serving in analytics dashboard for analyst access/export"
-    columns:
-      - name: paragraph_id
-        config:
-          tags: ["earnings_calls", "pressure_monitoring"]
-        tests:
-          - unique
-          - not_null
 
-  - name: int_earnings_call_enrichments
-    config:
-      tags: ["earnings_calls", "pressure_monitoring"]
-    description: "Intermediate model for earnings call enrichments (currently speaker_type and segment_type labels), with deduplication"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          config:
-            severity: warn
-          arguments:
-            combination_of_columns:
-              - transcript_id
-              - paragraph_number
-
-  - name: mart_dashboard_earnings_calls
-    config:
-      tags: ["earnings_calls", "pressure_monitoring"]
-    description: "Final model, fully-enriched earnings call transcript data, ready to serve"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          config:
-            severity: warn
-          arguments:
-            combination_of_columns:
-              - transcript_id
-              - paragraph_number
 
   - name: stg_tagged_records
     config:

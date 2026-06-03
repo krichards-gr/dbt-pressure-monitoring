@@ -1,4 +1,4 @@
--- TODO: Do I need to move this to the benchmarking dataset?
+{{ config(schema='social_media_activity_archive') }} -- Override default schema (dataset assignment) to build in the benchmarking BQ dataset
 
 SELECT 
     TRIM(assignments) AS assignments,

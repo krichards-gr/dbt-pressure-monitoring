@@ -20,7 +20,7 @@ WITH base_calls AS (
   LEFT JOIN {{ ref('stg_earnings_call_content') }} c
     ON info.transcript_id = c.transcript_id
 
-  -- If you want to optimize performance for incremental runs, filter by a timestamp here instead
+  -- To optimize performance for incremental runs, filter by a timestamp here instead
   {% if is_incremental() %}
     WHERE info.report_date >= (SELECT MAX(report_date) FROM {{ this }})
   {% endif %}
@@ -63,6 +63,7 @@ final_joined AS (
   FROM enrichments en
   LEFT JOIN {{ ref('stg_corporate_reference') }} ref
     ON en.symbol = ref.symbol
+  WHERE rank <= 500 -- Dynamic filter so we're only pulling in companies that we've validated belong to the F500
 ),
 
 deduped AS (

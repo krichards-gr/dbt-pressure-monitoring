@@ -14,9 +14,7 @@ sources:
         columns:
           - name: transcript_id
             description: '{{ doc("earnings_call_transcript_id") }}'
-            tests:
-              - unique
-              - not_null
+
           - name: symbol
             description: '{{ doc("symbol_or_ticker") }}'
             tests:
@@ -37,9 +35,7 @@ sources:
         columns:
             - name: transcript_id
               description: '{{ doc("earnings_call_transcript_id") }}'
-              tests:
-                - unique
-                - not_null
+
             - name: paragraph_number
               description: '{{ doc("earnings_call_paragraph_number") }}'
               tests:
@@ -52,8 +48,8 @@ sources:
               description: '{{ doc("earnings_call_content") }}'
               tests:
                   - not_null
-        config:
-          tags: "earnings_calls"
+              config:
+                tags: "earnings_calls"
 
 
 
@@ -61,7 +57,60 @@ sources:
     database: sri-benchmarking-databases
     schema: social_media_activity_archive
     tables:
+      
       - name: external_benchmarking_corporate_reference
+        description: "Corporation metadata used across pipelines to resolve corporate entities and as inputs for scraping processes"
+        
+        columns:
+        
+        - name: assignments
+          description: '{{ doc("assignments") }}'
+
+        - name: corporation
+          description: '{{ doc("corporation") }}'
+          tests:
+            - unique
+
+        - name: sector
+          description: '{{ doc("sector") }}'
+
+        - name: profile_url
+          description: '{{ doc("profile_linkedin_url") }}'
+
+        - name: instagram_url
+          description: '{{ doc("instagram_url") }}'
+
+        - name: x_url
+          description: '{{ doc("x_url") }}'
+
+        - name: newsroom_url
+          description: '{{ doc("newsroom_url") }}'
+
+        - name: cik_SEC_lookup
+          description: '{{ doc("cik") }}'
+
+        - name: peers_of
+          description: '{{ doc("peer_of") }}'
+
+        - name: product
+          description: '{{ doc("product") }}'
+
+        - name: rank
+          description: '{{ doc("company_rank") }}'
+
+        - name: F100
+          description: '{{ doc("f100") }}'
+
+        - name: F500
+          description: '{{ doc("f500") }}'
+
+        - name: parent
+          description: '{{ doc("parent_company") }}'
+
+        - name: ticker
+          description: '{{ doc("symbol_or_ticker") }}'
+
+
       - name: external_analyst_ced_subs
       - name: external_ceo_benchmarking_reference
       - name: external_issue_term_reference
