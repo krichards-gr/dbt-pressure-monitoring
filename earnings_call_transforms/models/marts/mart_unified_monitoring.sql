@@ -2,28 +2,10 @@
 
 -- TODO: What tests do we need on this table?
 
-WITH grouped_data AS (
-  SELECT DATE(date_posted) AS date_posted,
+SELECT
+  date,
   category,
-  COUNT(retool_primary_key) AS engagement_count
-  FROM {{ ref('mart_tagged_records') }}
-  WHERE date_posted IS NOT NULL
-  GROUP BY date_posted, category
-),
+  story_count,
+  engagement_count
 
-engagement_data AS (
-SELECT date_posted,
-category,
-engagement_count
-FROM grouped_data
-)
-
-SELECT DISTINCT 
-  COALESCE(ed.date_posted, sd.publish_date) AS date,
-  COALESCE(sd.category, ed.category) AS category,
-  IFNULL(sd.story_count, 0) AS story_count,
-  IFNULL(ed.engagement_count, 0) AS engagement_count
-FROM {{ ref('int_daily_story_data') }} sd
-
-FULL JOIN engagement_data ed
-  ON ed.date_posted = sd.publish_date AND ed.category = sd.category
+FROM {{ ref('int_unified_monitoring') }}

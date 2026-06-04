@@ -275,7 +275,7 @@ models:
           arguments:
             combination_of_columns:
               - corporation
-              - chief_executive_officer
+              - executive_name
 
   - name: stg_issue_term_reference
     config:

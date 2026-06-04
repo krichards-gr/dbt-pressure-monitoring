@@ -188,7 +188,8 @@ CEOTwitterCombined AS (
     -- Match on discovery_input
     SELECT 
         corporation,
-        chief_executive_officer,
+        executive_name,
+        executive_type,
         sector,
         date_posted,
         ctp.description,
@@ -209,7 +210,8 @@ CEOTwitterCombined AS (
     -- Match on url (strip /status suffix)
     SELECT 
         corporation,
-        chief_executive_officer,
+        executive_name,
+        executive_type,
         sector,
         date_posted,
         ctp.description,
@@ -234,7 +236,8 @@ CEOTwitterCombined AS (
 CEOTwitterRanked AS (
     SELECT
         corporation,
-        chief_executive_officer,
+        executive_name,
+        executive_type,
         sector,
         date_posted,
         description,
@@ -251,7 +254,8 @@ CEOLinkedInCombined AS (
     -- Match on discovery_input
     SELECT 
         corporation,
-        chief_executive_officer,
+        executive_name,
+        executive_type,
         sector,
         date_posted,
         post_text,
@@ -272,7 +276,8 @@ CEOLinkedInCombined AS (
     -- Match on use_url (after stripping query parameters)
     SELECT 
         corporation,
-        chief_executive_officer,
+        executive_name,
+        executive_type,
         sector,
         date_posted,
         post_text,
@@ -296,7 +301,8 @@ CEOLinkedInCombined AS (
 CEOLinkedInRanked AS (
     SELECT
         corporation,
-        chief_executive_officer,
+        executive_name,
+        executive_type,
         sector,
         date_posted,
         post_text,
@@ -311,9 +317,9 @@ CEOLinkedInRanked AS (
 -- Combine all posts into a single unified table
 AllPosts AS (
     SELECT
-        'Executive' AS type,
+        executive_type AS type,
         corporation,
-        chief_executive_officer AS executive_name,
+        executive_name,
         sector,
         TIMESTAMP(date_posted) AS date_posted,
         post_text,
@@ -325,9 +331,9 @@ AllPosts AS (
     UNION ALL
     
     SELECT
-        'Executive' AS type,
+        executive_type AS type,
         corporation,
-        chief_executive_officer AS executive_name,
+        executive_name,
         sector,
         TIMESTAMP(date_posted) AS date_posted,
         description AS post_text,
