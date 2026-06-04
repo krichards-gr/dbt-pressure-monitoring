@@ -27,7 +27,7 @@ LinkedInCombined AS (
         AND lp.discovery_input != '' 
         AND SAFE.PARSE_JSON(lp.discovery_input) IS NOT NULL
         {% if is_incremental() %}
-        AND lp.url NOT IN (SELECT url FROM {{ this }})
+        AND lp.url NOT IN (SELECT url FROM {{ this }} WHERE url IS NOT NULL)
         {% endif %}
         
     UNION ALL
@@ -47,11 +47,11 @@ LinkedInCombined AS (
             lp.use_url,
             SUBSTR(lp.use_url, 1, STRPOS(lp.use_url, '?') - 1)
         )
-    WHERE (lp.discovery_input IS NULL OR lp.discovery_input = '' OR SAFE.PARSE_JSON(lp.discovery_input) IS NULL) 
-        AND lp.use_url IS NOT NULL 
+    -- FIX: Removed discovery_input IS NULL exclusion to allow fallback execution
+    WHERE lp.use_url IS NOT NULL 
         AND lp.use_url != ''
         {% if is_incremental() %}
-        AND lp.url NOT IN (SELECT url FROM {{ this }})
+        AND lp.url NOT IN (SELECT url FROM {{ this }} WHERE url IS NOT NULL)
         {% endif %}
 ),
 
@@ -86,7 +86,7 @@ InstagramCombined AS (
         AND ip.discovery_input != '' 
         AND SAFE.PARSE_JSON(ip.discovery_input) IS NOT NULL
         {% if is_incremental() %}
-        AND ip.url NOT IN (SELECT url FROM {{ this }})
+        AND ip.url NOT IN (SELECT url FROM {{ this }} WHERE url IS NOT NULL)
         {% endif %}
  
     UNION ALL
@@ -102,11 +102,11 @@ InstagramCombined AS (
     FROM {{ ref('stg_corporate_reference') }} bcr
     INNER JOIN {{ ref('stg_instagram_posts') }} ip 
         ON RTRIM(bcr.instagram_url, '/') = ip.profile_url
-    WHERE (ip.discovery_input IS NULL OR ip.discovery_input = '' OR SAFE.PARSE_JSON(ip.discovery_input) IS NULL) 
-        AND ip.profile_url IS NOT NULL 
+    -- FIX: Removed discovery_input IS NULL exclusion to allow fallback execution
+    WHERE ip.profile_url IS NOT NULL 
         AND ip.profile_url != ''
         {% if is_incremental() %}
-        AND ip.url NOT IN (SELECT url FROM {{ this }})
+        AND ip.url NOT IN (SELECT url FROM {{ this }} WHERE url IS NOT NULL)
         {% endif %}
 ),
 
@@ -141,7 +141,7 @@ TwitterCombined AS (
         AND tp.discovery_input != '' 
         AND SAFE.PARSE_JSON(tp.discovery_input) IS NOT NULL
         {% if is_incremental() %}
-        AND tp.url NOT IN (SELECT url FROM {{ this }})
+        AND tp.url NOT IN (SELECT url FROM {{ this }} WHERE url IS NOT NULL)
         {% endif %}
         
     UNION ALL
@@ -161,11 +161,11 @@ TwitterCombined AS (
             tp.url,
             SUBSTR(tp.url, 1, STRPOS(tp.url, '/status') - 1)
         )
-    WHERE (tp.discovery_input IS NULL OR tp.discovery_input = '' OR SAFE.PARSE_JSON(tp.discovery_input) IS NULL) 
-        AND tp.url IS NOT NULL 
+    -- FIX: Removed discovery_input IS NULL exclusion to allow fallback execution
+    WHERE tp.url IS NOT NULL 
         AND tp.url != ''
         {% if is_incremental() %}
-        AND tp.url NOT IN (SELECT url FROM {{ this }})
+        AND tp.url NOT IN (SELECT url FROM {{ this }} WHERE url IS NOT NULL)
         {% endif %}
 ),
 
@@ -202,7 +202,7 @@ CEOTwitterCombined AS (
         AND ctp.discovery_input != '' 
         AND SAFE.PARSE_JSON(ctp.discovery_input) IS NOT NULL
         {% if is_incremental() %}
-        AND ctp.url NOT IN (SELECT url FROM {{ this }})
+        AND ctp.url NOT IN (SELECT url FROM {{ this }} WHERE url IS NOT NULL)
         {% endif %}
         
     UNION ALL
@@ -224,12 +224,11 @@ CEOTwitterCombined AS (
             ctp.url,
             SUBSTR(ctp.url, 1, STRPOS(ctp.url, '/status') - 1)
         )
-    -- FIX: Corrected WHERE clause logic (was using OR/IS NOT NULL, should be fallback only)
-    WHERE (ctp.discovery_input IS NULL OR ctp.discovery_input = '' OR SAFE.PARSE_JSON(ctp.discovery_input) IS NULL) 
-        AND ctp.url IS NOT NULL 
+    -- FIX: Removed discovery_input IS NULL exclusion to allow fallback execution
+    WHERE ctp.url IS NOT NULL 
         AND ctp.url != ''
         {% if is_incremental() %}
-        AND ctp.url NOT IN (SELECT url FROM {{ this }})
+        AND ctp.url NOT IN (SELECT url FROM {{ this }} WHERE url IS NOT NULL)
         {% endif %}
 ),
 
@@ -268,7 +267,7 @@ CEOLinkedInCombined AS (
         AND clp.discovery_input != '' 
         AND SAFE.PARSE_JSON(clp.discovery_input) IS NOT NULL
         {% if is_incremental() %}
-        AND clp.url NOT IN (SELECT url FROM {{ this }})
+        AND clp.url NOT IN (SELECT url FROM {{ this }} WHERE url IS NOT NULL)
         {% endif %}
         
     UNION ALL
@@ -290,11 +289,11 @@ CEOLinkedInCombined AS (
             clp.use_url,
             SUBSTR(clp.use_url, 1, STRPOS(clp.use_url, '?') - 1)
         )
-    WHERE (clp.discovery_input IS NULL OR clp.discovery_input = '' OR SAFE.PARSE_JSON(clp.discovery_input) IS NULL) 
-        AND clp.use_url IS NOT NULL 
+    -- FIX: Removed discovery_input IS NULL exclusion to allow fallback execution
+    WHERE clp.use_url IS NOT NULL 
         AND clp.use_url != ''
         {% if is_incremental() %}
-        AND clp.url NOT IN (SELECT url FROM {{ this }})
+        AND clp.url NOT IN (SELECT url FROM {{ this }} WHERE url IS NOT NULL)
         {% endif %}
 ),
 
