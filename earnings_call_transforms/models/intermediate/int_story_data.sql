@@ -30,7 +30,7 @@ clustered AS (
   SELECT 
     scm.cluster_id,
     s.corrected_category,
-    DATE(s.last_seen_date) AS publish_date,
+    DATE(s.created_at) AS publish_date,
     scm.story_id
   FROM {{ source('zignal_gold', 'story_cluster_mapping') }} scm -- Need to make a staging table for this
   INNER JOIN {{ ref('stg_story_data') }} s
