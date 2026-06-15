@@ -10,7 +10,7 @@ WITH matched_tags AS (
   
   FROM {{ ref('int_issue_tagged_socials') }} its
   
-  JOIN {{ ref('stg_engagement_term_reference') }} et
+  INNER JOIN {{ ref('stg_engagement_term_reference') }} et
     ON REGEXP_CONTAINS(its.post_text, et.key_terms)
   
   GROUP BY 1, 2, 3
@@ -57,7 +57,7 @@ resolved_and_ranked AS (
     ) AS tag_priority
 
   FROM {{ ref('int_issue_tagged_socials') }} its
-  LEFT JOIN matched_tags mt
+  INNER JOIN matched_tags mt
     ON its.retool_primary_key = mt.retool_primary_key
 )
 

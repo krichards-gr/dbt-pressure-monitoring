@@ -1,7 +1,7 @@
 {{ config(schema='pressure_monitoring') }} -- Override default schema (dataset assignment) to build in the benchmarking BQ dataset
 
 SELECT story_id,
-        issue_area,
+        -- issue_area,
         first_seen_date, -- This is the first date that this story appeared/was captured (serves as heuristic for publication date)
     REPLACE(TRIM(COALESCE(cm.new_category, issue_area)), "’", "'") AS category -- Grab the first non-null issue/category value, replace curly quote with regular
 

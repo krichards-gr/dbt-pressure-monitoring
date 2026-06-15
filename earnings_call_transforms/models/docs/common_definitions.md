@@ -115,3 +115,28 @@ Company is part of the F500, true/false
 {% docs parent_company %}
 Company of which the given corporation is a subsidiary.
 {% enddocs %}
+
+
+{% docs story_id %}
+Unique identifier for each story. Primary key.
+{% enddocs %}
+
+
+{% docs category %}
+Issue area/category. Subject to changes in definition/scope. Corrected by seed table 'category_map' across pipelines.
+{% enddocs %}
+
+
+{% docs first_seen_date %}
+Date story first appeared in monitoring dataset.
+{% enddocs %}
+
+
+{% docs story_count %}
+Count of unique stories on the given date, identified by story_id.
+{% enddocs %}
+
+
+{% docs engagement_count %}
+Count of unique engagements on the given date, identified by retool_primary_key.
+{% enddocs %}

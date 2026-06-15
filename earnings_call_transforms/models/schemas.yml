@@ -342,3 +342,103 @@ models:
         tests:
           - unique
           - not_null
+
+
+
+  - name: stg_story_data
+    config:
+      tags: ["pressure_monitoring"]
+    description: "Staging model for story data from Zignal"
+
+    columns:
+      - name: story_id
+        description: '{{ doc("story_id") }}'
+        tests:
+          - unique
+          - not_null
+
+      - name: first_seen_date
+        description: '{{ doc("first_seen_date") }}'
+        tests:
+          - not_null
+
+      - name: category
+        description: '{{ doc("category") }}'
+        tests:
+          - not_null
+
+
+  - name: int_daily_story_data
+    config:
+      tags: ["pressure_monitoring"]
+    description: "Intermediate model for story data from Zignal, calculates count of stories per issue per day"
+
+    columns:
+      - name: story_count
+        description: '{{ doc("story_count") }}'
+        tests:
+          - not_null
+
+      - name: publish_date
+        description: '{{ doc("first_seen_date") }}'
+        tests:
+          - not_null
+
+      - name: category
+        description: '{{ doc("category") }}'
+        tests:
+          - not_null
+
+
+  - name: int_daily_unified_monitoring
+    config:
+      tags: ["unified_monitoring"]
+    description: "Intermediate model that combines daily Zignal story count data with daily engagement count data, by category"
+
+    columns:
+      - name: story_count
+        description: '{{ doc("story_count") }}'
+        tests:
+          - not_null
+
+      - name: date
+        description: '{{ doc("first_seen_date") }}'
+        tests:
+          - not_null
+
+      - name: category
+        description: '{{ doc("category") }}'
+        tests:
+          - not_null
+
+      - name: engagement_count
+        description: '{{ doc("engagement_count") }}'
+        tests:
+          - not_null
+
+
+  - name: mart_daily_unified_monitoring
+    config:
+      tags: ["unified_monitoring"]
+    description: "Mart model supporting self-service combined daily Zignal story count data with daily engagement count data, by category"
+
+    columns:
+      - name: story_count
+        description: '{{ doc("story_count") }}'
+        tests:
+          - not_null
+
+      - name: date
+        description: '{{ doc("first_seen_date") }}'
+        tests:
+          - not_null
+
+      - name: category
+        description: '{{ doc("category") }}'
+        tests:
+          - not_null
+
+      - name: engagement_count
+        description: '{{ doc("engagement_count") }}'
+        tests:
+          - not_null

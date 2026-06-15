@@ -136,10 +136,23 @@ sources:
   - name: zignal_gold
     database: sri-monitoring-pipeline
     schema: zignal_gold
+    
     tables:
       - name: story
         config:
           tags: "pressure_monitoring"
+
+        columns:
+        - name: story_id
+          description: '{{ doc("story_id") }}'
+
+        - name: issue_area
+          description: '{{ doc("category") }}'
+
+        - name: first_seen_date
+          description: '{{ doc("first_seen_date") }}'
+
+
       - name: story_cluster_mapping
         config:
           tags: "pressure_monitoring"

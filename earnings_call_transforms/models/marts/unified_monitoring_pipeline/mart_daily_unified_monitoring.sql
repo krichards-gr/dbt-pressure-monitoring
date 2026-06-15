@@ -8,4 +8,4 @@ SELECT
   story_count,
   engagement_count
 
-FROM {{ ref('int_unified_monitoring') }}
+FROM {{ ref('int_daily_unified_monitoring') }}
