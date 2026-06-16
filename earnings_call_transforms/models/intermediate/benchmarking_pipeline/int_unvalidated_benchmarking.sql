@@ -107,10 +107,10 @@ category_sector_mapped AS (
 
 FROM combined_data cd
 
-LEFT JOIN {{ ref('sector_map') }} sm 
+LEFT JOIN {{ ref('stg_sector_map') }} sm 
     ON TRIM(LOWER(cd.sector)) = TRIM(LOWER(sm.old_sector))
 
-LEFT JOIN {{ ref('category_map') }} cm 
+LEFT JOIN {{ ref('stg_category_map') }} cm 
     ON TRIM(LOWER(cd.category)) = TRIM(LOWER(cm.old_category))
 )
 

@@ -115,6 +115,31 @@ sources:
       - name: external_ceo_benchmarking_reference
       - name: external_issue_term_reference
       - name: external_engagement_term_reference
+
+      - name: external_sector_map
+        description: "Serves as seed table for correcting sector field values in our benchmarking pipeline"
+        
+        columns:
+        
+        - name: old_sector
+          description: "Incorrect or deprecated sectors to update"
+
+        - name: new_sector
+          description: "New sectors to update to"
+
+
+      - name: external_category_map
+        description: "Serves as seed table for correcting category field values in our benchmarking pipeline"
+        
+        columns:
+        
+        - name: old_category
+          description: "Incorrect or deprecated category to update"
+
+        - name: new_category
+          description: "New category to update to"
+
+
       - name: instagram_posts_copy # Raw Instagram data
       - name: linkedin_posts_copy # Raw LinkedIn data
       - name: x_posts # Raw X data
