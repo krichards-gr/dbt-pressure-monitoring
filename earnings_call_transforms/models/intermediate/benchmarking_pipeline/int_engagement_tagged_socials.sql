@@ -1,4 +1,4 @@
-{{ config(schema='social_media_activity_archive') }}
+{{ config(schema='social_media_activity_archive', materialized='view') }}
 
 -- 1. Dynamically pull historical patterns to determine probabilistic priority
 WITH historical_frequencies AS (

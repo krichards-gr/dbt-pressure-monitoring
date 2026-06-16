@@ -1,37 +1,44 @@
 old_sector,new_sector
-Aerospace & Defense,Industrials
+Sports and Recreation,Communications Services
 Agriculture,Consumer Goods
 "Appliances, Electrical, And Electronics Manufacturing",Consumer Goods
-Biotechnology,Health
-Communication Services,Tech
-Communications Services,Tech
 Consulting,Consumer Goods
 Consumer Discretionary,Consumer Goods
 Consumer Goods,Consumer Goods
 Consumer Staples,Consumer Goods
-Defence & Space,Industrials
-Defense,Industrials
-Education,Non-Corporate Organization
 Entertainment,Consumer Goods
 Environmental Services,Consumer Goods
-Financials,Financial
 Gaming,Consumer Goods
-Government,Non-Corporate Organization
-Government Services,Non-Corporate Organization
-Healthcare,Health
-Information Technology,Tech
 Legal Services,Consumer Goods
-Manufacturing,Industrials
-Nonprofit,Non-Corporate Organization
-Other,Non-Corporate Organization
 Professional Services,Consumer Goods
 Professional/Business Services,Consumer Goods
-Public Safety,Non-Corporate Organization
 Retail,Consumer Goods
 Sports,Consumer Goods
-Technology,Tech
-Telecommunications,Tech
+Dairy Product Manufacturing,Consumer Goods
+Financial,Financials
+Biotechnology,Health
+Healthcare,Health
+Aerospace & Defense,Industrials
+Defence & Space,Industrials
+Defense,Industrials
+Manufacturing,Industrials
 Transportation,Industrials
 Transportation & Logistics,Industrials
 Transportation And Logistics,Industrials
 Waste Management,Industrials
+Education,Non-Corporate Organization
+Government,Non-Corporate Organization
+Government Services,Non-Corporate Organization
+Nonprofit,Non-Corporate Organization
+Other,Non-Corporate Organization
+Public Safety,Non-Corporate Organization
+Education,Non-Corporate Organization
+Education/Research,Non-Corporate Organization
+Education/Workforce Development,Non-Corporate Organization
+Labor Unions,Non-Corporate Organization
+Communication Services,Tech
+Communications Services,Tech
+Information Technology,Tech
+Technology,Tech
+Telecommunications,Tech
+Education Technology,Tech
