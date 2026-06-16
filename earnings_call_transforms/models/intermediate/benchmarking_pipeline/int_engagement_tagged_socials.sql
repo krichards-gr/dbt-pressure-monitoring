@@ -1,7 +1,16 @@
 {{ config(schema='social_media_activity_archive') }}
 
--- Build reference table with matched engagement terms
-WITH matched_tags AS (
+-- 1. Dynamically pull historical patterns to determine probabilistic priority
+WITH historical_frequencies AS (
+  SELECT 
+    `Engagement_Sub-Type` AS engagement_sub_type,
+    COUNT(*) AS historical_record_count
+  FROM `sri-benchmarking-databases.social_media_activity_archive.mart_tagged_records`
+  GROUP BY 1
+),
+
+-- 2. Build reference table with matched engagement terms
+matched_tags AS (
   SELECT 
     its.retool_primary_key,
     et.engagement_sub_type,
@@ -16,7 +25,7 @@ WITH matched_tags AS (
   GROUP BY 1, 2, 3
 ),
 
--- Select top engagement label (based on alphabetical ordering for now) and join with full record set
+-- 3. Select top engagement label based on historical probability
 resolved_and_ranked AS (
 
   SELECT 
@@ -41,27 +50,23 @@ resolved_and_ranked AS (
     its.summary,
     its.url,
     
-    -- Alphabetical ranking system  TODO: Can we build a ranking system that is based on historical pattern performance?
+    -- Sorts by historical volume DESC. Brand new sub-types default to 0 volume.
+    -- Sub-type alphabetical string sort added as a secondary fallback key for deterministic ties.
     ROW_NUMBER() OVER (
       PARTITION BY its.retool_primary_key 
       ORDER BY 
-        CASE COALESCE(mt.engagement_sub_type, its.engagement_sub_type)
-          WHEN 'Advocacy/Lobbying' THEN 1
-          WHEN 'Donation/Grant'    THEN 2
-          WHEN 'Employee Event'    THEN 3
-          WHEN 'Observed Holiday'  THEN 4
-          WHEN 'Product Line'      THEN 5
-          WHEN 'Sponsorship'       THEN 6
-          ELSE 7 -- Catches any other tag not explicitly listed
-        END ASC
+        COALESCE(hf.historical_record_count, 0) DESC,
+        COALESCE(mt.engagement_sub_type, its.engagement_sub_type) ASC
     ) AS tag_priority
 
   FROM {{ ref('int_issue_tagged_socials') }} its
   INNER JOIN matched_tags mt
     ON its.retool_primary_key = mt.retool_primary_key
+  LEFT JOIN historical_frequencies hf
+    ON COALESCE(mt.engagement_sub_type, its.engagement_sub_type) = hf.engagement_sub_type
 )
 
--- Select only the top alphabetically ranked row per post
+-- 4. Filter down to only the single highest-probability row per primary key
 SELECT
     assignments,
     category,
@@ -87,5 +92,3 @@ SELECT
 FROM resolved_and_ranked
 
 WHERE tag_priority = 1
-  -- AND resolved_and_ranked.engagement_sub_type IS NOT NULL TODO: We can add this back in IF we ever get to a point where we feel like
-  -- our pre-labeling captures all engagements

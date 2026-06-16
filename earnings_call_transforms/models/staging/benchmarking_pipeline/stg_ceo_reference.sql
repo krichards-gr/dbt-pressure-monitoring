@@ -1,4 +1,4 @@
-{{ config(schema='social_media_activity_archive') }} -- Override default schema (dataset assignment) to build in the benchmarking BQ dataset
+{{ config(schema='social_media_activity_archive', materialized='view') }} -- Override default schema (dataset assignment) to build in the benchmarking BQ dataset
 
 SELECT
   NULLIF(TRIM(corporation), '') AS corporation,

@@ -1,7 +1,7 @@
 -- TODO: Add value testing for sector and category in schema
 -- Add uniqueness test on...?
 
-{{ config(schema='social_media_activity_archive') }}
+{{ config(schema='social_media_activity_archive', materialized='view') }}
 
 
 WITH combined_data AS (

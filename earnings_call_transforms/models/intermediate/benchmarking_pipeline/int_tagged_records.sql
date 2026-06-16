@@ -1,6 +1,6 @@
 -- TODO: Is date_posted the right ordering column for our deduplication?
 
-{{ config(schema='social_media_activity_archive') }}
+{{ config(schema='social_media_activity_archive', materialized='view') }}
 
 SELECT 
     C.assignments,

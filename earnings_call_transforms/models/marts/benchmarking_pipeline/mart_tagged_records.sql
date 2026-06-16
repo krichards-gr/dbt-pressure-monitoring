@@ -1,4 +1,4 @@
-{{ config(schema='social_media_activity_archive') }}
+{{ config(schema='social_media_activity_archive', materialized='view') }}
 
 SELECT 
     assignments,
