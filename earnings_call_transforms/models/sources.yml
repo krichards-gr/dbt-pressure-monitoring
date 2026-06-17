@@ -1,7 +1,11 @@
-
 version: 2
-
 sources:
+  - name: raw_risk_data
+    database: sri-benchmarking-databases
+    schema: risk_index_data
+    tables:
+      - name: weekly_mentions_raw
+
   - name: pressure_monitoring
     description: "Currently contains datasets of corporate communications that are not primary sources for benchmarking (e.g., earnings call transcripts)."
     database: sri-benchmarking-databases
@@ -50,6 +54,7 @@ sources:
                   - not_null
               config:
                 tags: "earnings_calls"
+
 
 
   - name: risk_index_data

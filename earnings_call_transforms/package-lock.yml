@@ -5,4 +5,7 @@ packages:
   - name: dbt_project_evaluator
     package: dbt-labs/dbt_project_evaluator
     version: 1.3.0
-sha1_hash: e38348430132e10bb80edcca9da581fbe90924fe
+  - name: dbt_external_tables
+    package: dbt-labs/dbt_external_tables
+    version: 0.9.0
+sha1_hash: 142713cbac02d1af0d845c3206a68ad134ae46f0
