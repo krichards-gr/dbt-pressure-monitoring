@@ -52,6 +52,14 @@ sources:
                 tags: "earnings_calls"
 
 
+  - name: risk_index_data
+    database: sri-benchmarking-databases
+    schema: risk_index_data
+    tables:
+      
+      - name: external_risk_index_issue_inputs
+        description: "External table linked to Google Sheets workbook containing issue-area owner quarterly inputs"
+
 
   - name: social_media_activity_archive
     database: sri-benchmarking-databases
