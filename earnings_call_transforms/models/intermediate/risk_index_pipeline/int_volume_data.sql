@@ -15,7 +15,7 @@ WITH
       category,
       quarter_start,
       weekly_average,
-      CASE
+      CASE -- TODO: These hardcoded risk scores need to be made dynamic
         WHEN weekly_average > 500 THEN 4
         WHEN weekly_average >= 300 THEN 3
         WHEN weekly_average >= 100 THEN 2
@@ -69,7 +69,7 @@ percent_change_score AS (SELECT
   weekly_average,
   inter_issue_score,
   percent_change_vs_rolling_avg,
-  CASE
+  CASE -- TODO: These hardcoded risk scores need to be made dynamic
     WHEN percent_change_vs_rolling_avg > 26 THEN 4
     WHEN percent_change_vs_rolling_avg >= 1 THEN 3
     WHEN percent_change_vs_rolling_avg >= -25 THEN 2

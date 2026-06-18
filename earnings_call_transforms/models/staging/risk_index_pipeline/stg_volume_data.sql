@@ -28,3 +28,5 @@ UNNEST([
 ]) AS triple
 WHERE triple.dataset_name IS NOT NULL
   AND triple.date_str IS NOT NULL
+
+QUALIFY ROW_NUMBER() OVER (PARTITION BY dataset_name, date ORDER BY m_count DESC) = 1
