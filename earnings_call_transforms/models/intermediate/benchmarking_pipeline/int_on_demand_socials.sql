@@ -303,7 +303,7 @@ CEOLinkedInRanked AS (
         executive_name,
         executive_type,
         sector,
-        date_posted,
+        SAFE_CAST(date_posted AS TIMESTAMP) as date_posted,
         post_text,
         url,
         ROW_NUMBER() OVER(
@@ -320,7 +320,7 @@ AllPosts AS (
         corporation,
         executive_name,
         sector,
-        TIMESTAMP(date_posted) AS date_posted,
+        SAFE_CAST(date_posted AS TIMESTAMP) as date_posted,
         post_text,
         url,
         'LinkedIn' AS platform
@@ -334,7 +334,7 @@ AllPosts AS (
         corporation,
         executive_name,
         sector,
-        TIMESTAMP(date_posted) AS date_posted,
+        SAFE_CAST(date_posted AS TIMESTAMP) as date_posted,
         description AS post_text,
         url,
         'Twitter' AS platform
@@ -348,7 +348,7 @@ AllPosts AS (
         corporation,
         NULL AS executive_name,
         sector,
-        TIMESTAMP(date_posted) AS date_posted,
+        SAFE_CAST(date_posted AS TIMESTAMP) as date_posted,
         post_text,
         url,
         'LinkedIn' AS platform
@@ -362,7 +362,7 @@ AllPosts AS (
         corporation,
         NULL AS executive_name,
         sector,
-        TIMESTAMP(date_posted) AS date_posted,
+        SAFE_CAST(date_posted AS TIMESTAMP) as date_posted,
         description AS post_text,
         url,
         'Instagram' AS platform
@@ -376,7 +376,7 @@ AllPosts AS (
         corporation,
         NULL AS executive_name,
         sector,
-        TIMESTAMP(date_posted) AS date_posted,
+        SAFE_CAST(date_posted AS TIMESTAMP) as date_posted,
         description AS post_text,
         url,
         'Twitter' AS platform

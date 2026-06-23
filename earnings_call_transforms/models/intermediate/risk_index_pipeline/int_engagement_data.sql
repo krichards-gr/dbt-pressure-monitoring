@@ -47,8 +47,10 @@ WITH
     FROM categories c
     CROSS JOIN sectors s
     CROSS JOIN all_quarters aq
-  )
-SELECT
+  ),
+
+counts AS (
+  SELECT
   g.sector,
   g.category,
   g.quarter_start,
@@ -62,4 +64,29 @@ LEFT JOIN pivoted_counts pc
     AND g.quarter_start = pc.quarter_start
 
     WHERE g.quarter_start >= "2025-01-01"
-ORDER BY g.quarter_start DESC, g.category, g.sector
+-- ORDER BY g.quarter_start DESC, g.category, g.sector
+)
+
+SELECT 
+  sector,
+  category,
+  quarter_start,
+  engagement_count,
+  backlash_count,
+  -- Engagement Score
+  CASE
+    WHEN engagement_count >= 60 THEN 4
+    WHEN engagement_count >= 45 THEN 3
+    WHEN engagement_count >= 25 THEN 2
+    ELSE 1
+  END AS engagement_score,
+
+  -- Backlash Score
+  CASE
+    WHEN backlash_count >= 30 THEN 4
+    WHEN backlash_count >= 20 THEN 3
+    WHEN backlash_count >= 10 THEN 2
+    ELSE 1
+  END AS backlash_score
+  
+FROM counts

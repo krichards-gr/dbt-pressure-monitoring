@@ -4,7 +4,7 @@
 
 SELECT 
   -- Safely parse the timestamp with the specific format
-  DATE_TRUNC(DATE(timestamp), QUARTER) AS quarter_start_date,
+  DATE_TRUNC(DATE(timestamp), QUARTER) AS quarter_start,
   timestamp,
   email_address,
   COALESCE(new_category, what_issue_area_do_you_cover) AS category, -- Map to corrections table

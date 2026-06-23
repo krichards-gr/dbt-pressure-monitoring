@@ -1,7 +1,7 @@
 {{ config(schema='risk_index_data') }}
 
 SELECT 
-  quarter_start_date,
+  quarter_start,
   timestamp,
   email_address,
   category,

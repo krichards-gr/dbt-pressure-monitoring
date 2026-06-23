@@ -24,7 +24,22 @@ SELECT
     intra_issue_score,
     combined_score,
     engagement_count,
-    backlash_count
+    backlash_count,
+    -- Engagement Score
+  CASE
+    WHEN engagement_count >= 60 THEN 4
+    WHEN engagement_count >= 45 THEN 3
+    WHEN engagement_count >= 25 THEN 2
+    ELSE 1
+  END AS engagement_score,
+
+  -- Backlash Score
+  CASE
+    WHEN backlash_count >= 30 THEN 4
+    WHEN backlash_count >= 20 THEN 3
+    WHEN backlash_count >= 10 THEN 2
+    ELSE 1
+  END AS backlash_score
 
 FROM {{ ref('int_volume_data')}} ivd
 
