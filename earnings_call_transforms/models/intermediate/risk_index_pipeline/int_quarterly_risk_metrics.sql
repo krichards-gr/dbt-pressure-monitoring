@@ -22,12 +22,14 @@ WITH consolidated_metrics AS (
 
         FROM {{ ref('int_consolidated_data') }} cd
 
-        LEFT JOIN {{ ref('int_issue_inputs') }} ii
+        INNER JOIN {{ ref('int_issue_inputs') }} ii
         ON TRIM(LOWER(cd.category)) = TRIM(LOWER(ii.category)) AND cd.quarter_start = ii.quarter_start
 ),
 
 averaged_components AS (
     SELECT
+        category,
+        quarter_start,
         (political_rhetoric_rating + legislation_rating + litigation_rating + major_moments_rating) / 4 AS staying_power_avg,
         (engagement_score + backlash_score + reputational_and_operational_impact_rating) / 3 AS business_impact_avg,
         (inter_issue_score + intra_issue_score) / 2 AS volume_avg,
@@ -38,6 +40,8 @@ averaged_components AS (
 
 weighted_components AS (
     SELECT
+        category,
+        quarter_start,
         business_impact_avg * 0.5 AS business_impact_weighted,
         ((staying_power_avg + volume_avg + polarization_avg) / 3) * 0.5 AS other_weighted
 
@@ -46,6 +50,8 @@ weighted_components AS (
 
 raw_scores AS (
     SELECT
+        category,
+        quarter_start,
         business_impact_weighted + other_weighted AS raw_score
 
     FROM weighted_components
@@ -53,6 +59,8 @@ raw_scores AS (
 
 normalized_scores AS (
     SELECT
+        category,
+        quarter_start,
         raw_score,
         (raw_score / 4) * 100 AS normalized_score
 
