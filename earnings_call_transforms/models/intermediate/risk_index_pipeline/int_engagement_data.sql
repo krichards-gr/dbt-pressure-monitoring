@@ -3,7 +3,7 @@
 WITH
   quarters AS (
     SELECT
-      category,
+      REGEXP_REPLACE(category, "Economic Empowerment", "Economic Headwinds") AS category,
       DATE_TRUNC(DATE(date_posted), QUARTER) AS quarter_start,
       sector,
       CASE

@@ -7,7 +7,7 @@ SELECT
   DATE_TRUNC(DATE(timestamp), QUARTER) AS quarter_start,
   timestamp,
   email_address,
-  COALESCE(new_category, what_issue_area_do_you_cover) AS category, -- Map to corrections table
+  COALESCE(new_category, what_issue_area_do_you_cover) AS category,
   risk_overview,
   key_subtopics,
   political_rhetoric,
