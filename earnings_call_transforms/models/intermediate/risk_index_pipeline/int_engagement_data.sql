@@ -69,7 +69,7 @@ LEFT JOIN pivoted_counts pc
 
 SELECT 
   sector,
-  category,
+  COALESCE(ecm.new_category, c.category) AS category,
   quarter_start,
   engagement_count,
   backlash_count,
@@ -89,4 +89,7 @@ SELECT
     ELSE 1
   END AS backlash_score
   
-FROM counts
+FROM counts c
+
+LEFT JOIN {{ ref('stg_category_map')}} ecm
+  ON TRIM(LOWER(c.category)) = TRIM(LOWER(ecm.old_category))
