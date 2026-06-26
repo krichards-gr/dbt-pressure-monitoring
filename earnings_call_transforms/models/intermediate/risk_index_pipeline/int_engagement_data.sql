@@ -13,6 +13,7 @@ WITH
         AS type
     FROM {{ ref('mart_tagged_records') }}
     WHERE category IS NOT NULL AND sector IS NOT NULL
+      AND ((category != "Health Access") OR (category = "Health Access" AND sector = "Health")) -- Need to add further refinement here for F&B + Nutrition
   ),
   pivoted_counts AS (
     SELECT

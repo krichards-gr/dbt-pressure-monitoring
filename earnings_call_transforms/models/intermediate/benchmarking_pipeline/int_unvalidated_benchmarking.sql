@@ -158,6 +158,7 @@ SELECT *
 
   WHERE COALESCE(is_deleted, false) = false 
     AND COALESCE(Engagement_Type, '') != 'Not an Engagement'
+    AND COALESCE(`Engagement_Sub-Type`, '') != 'Not an Engagement'
     AND corporation != 'None'
     
     ORDER BY

@@ -298,6 +298,10 @@ type_lookup AS (
       END AS engagement_sub_type,
       engagement_type
     FROM {{ ref('stg_engagement_term_reference') }}
+
+    UNION ALL
+
+    SELECT 'Not an Engagement' AS engagement_sub_type, 'Not an Engagement' AS engagement_type
   )
   GROUP BY 1
 )
