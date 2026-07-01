@@ -120,13 +120,13 @@ per_class_flags AS (
 top_pred AS (
   SELECT
     retool_primary_key,
-    hf.engagement_sub_type AS top_regex_prediction,
+    m.engagement_sub_type AS top_regex_prediction,
     ROW_NUMBER() OVER (
       PARTITION BY retool_primary_key
       ORDER BY
         precedence ASC,
         COALESCE(hf.historical_record_count, 0) DESC,
-        hf.engagement_sub_type ASC
+        m.engagement_sub_type ASC
     ) AS rn
   FROM matched m
   LEFT JOIN historical_frequencies hf

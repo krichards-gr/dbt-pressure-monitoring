@@ -1,3 +1,15 @@
+{{
+    config(
+        materialized = 'table',
+        partition_by = {
+            "field": "report_date",
+            "data_type": "date",
+            "granularity": "day"
+        },
+        cluster_by = ['corporation', 'symbol', 'sector']
+    )
+}}
+
 SELECT 
     paragraph_id,
     symbol,
