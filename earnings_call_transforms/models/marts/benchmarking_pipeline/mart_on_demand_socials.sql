@@ -1,4 +1,15 @@
-{{ config(schema='social_media_activity_archive') }} -- Override default schema (dataset assignment) to build in the benchmarking BQ dataset
+{{
+    config(
+        schema='social_media_activity_archive',
+        materialized = 'table',
+        partition_by = {
+            "field": "date_posted",
+            "data_type": "timestamp",
+            "granularity": "day"
+        },
+        cluster_by = ['corporation', 'sector', 'platform', 'product']
+    )
+}}
 
 SELECT type,
 executive_name,

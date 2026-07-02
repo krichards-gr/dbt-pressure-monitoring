@@ -1,4 +1,15 @@
-{{ config(schema='social_media_activity_archive', materialized='view') }} -- Force materialization as a view so it's recalculated at query time (to pull in recently updated tagged records)
+{{
+    config(
+        schema='social_media_activity_archive',
+        materialized = 'table',
+        partition_by = {
+            "field": "date_posted",
+            "data_type": "date",
+            "granularity": "day"
+        },
+        cluster_by = ['category', 'sector']
+    )
+}}
 
 SELECT 
     assignments,

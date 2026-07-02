@@ -1,5 +1,15 @@
-{{ config(schema='social_media_activity_archive') }} -- Override default schema (dataset assignment) to build in the benchmarking BQ dataset
-
+{{
+    config(
+        schema='social_media_activity_archive',
+        materialized = 'table',
+        partition_by = {
+            "field": "date",
+            "data_type": "date",
+            "granularity": "day"
+        },
+        cluster_by = ['category']
+    )
+}}
 -- TODO: What tests do we need on this table?
 
 SELECT

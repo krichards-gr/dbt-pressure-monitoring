@@ -121,7 +121,7 @@ SELECT *
     assignments,
     corrected_category AS category,
     corporation,
-    date_posted,
+    DATE(date_posted) AS date_posted,
     deleted_at,
     edit_notes,
     edit_status,
