@@ -1,15 +1,4 @@
-{{
-    config(
-        schema='social_media_activity_archive',
-        -- materialized = 'table',
-        -- partition_by = {
-        --     "field": "date_posted",
-        --     "data_type": "date",
-        --     "granularity": "day"
-        -- },
-        -- cluster_by = ['category', 'sector']
-    )
-}}
+{{ config(schema='social_media_activity_archive') }}
 
 SELECT 
     assignments,
