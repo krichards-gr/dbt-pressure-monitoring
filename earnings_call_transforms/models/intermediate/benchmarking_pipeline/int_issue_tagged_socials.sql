@@ -140,8 +140,6 @@ GROUP BY -- Create one row for each category found for each input record
     it.category
 )
 
--- TODO: Add engagement type pre-labeling (similar to issue labeling above)
-
 SELECT cr.assignments,
        il.category,
        il.corporation,

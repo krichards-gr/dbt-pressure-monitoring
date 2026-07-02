@@ -1,5 +1,15 @@
-{{ config(schema='risk_index_data') }}
-
+{{
+    config(
+        schema='risk_index_data',
+        materialized = 'table',
+        partition_by = {
+            "field": "quarter_start",
+            "data_type": "date",
+            "granularity": "day"
+        },
+        cluster_by = ['category', 'sector']
+    )
+}}
 SELECT
     sector,
     category,
@@ -10,5 +20,3 @@ SELECT
     backlash_score
 
 FROM {{ ref('int_engagement_data')}}
-
-ORDER BY quarter_start DESC, category

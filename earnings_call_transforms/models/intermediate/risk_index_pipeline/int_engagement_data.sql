@@ -1,5 +1,15 @@
-{{ config(schema='risk_index_data') }}
-
+{{
+    config(
+        schema='risk_index_data',
+        materialized = 'table',
+        partition_by = {
+            "field": "quarter_start",
+            "data_type": "date",
+            "granularity": "day"
+        },
+        cluster_by = ['category', 'sector']
+    )
+}}
 WITH
   quarters AS (
     SELECT
