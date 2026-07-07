@@ -16,6 +16,7 @@ WITH rawCedData AS (
     CASE WHEN url LIKE '%instagram%' THEN 'Instagram'
       WHEN url LIKE '%linkedin%' THEN 'LinkedIn'
       WHEN url LIKE '%/x.com%' THEN 'Twitter'
+      WHEN url LIKE '%twitter' THEN 'Twitter'
       ELSE 'Other'
     END AS platform,
     CAST(NULL AS STRING) AS event_group_id,
